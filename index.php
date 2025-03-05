@@ -4,7 +4,7 @@ $mainCircle = [
 ];
 
 $supportCircle = [
-    ["img" => "ig.jpeg", "link" => "https://www.instagram.com/", "caption" => "Instagram"],
+    ["img" => "ig.jpeg", "link" => "https://www.instagram.com/tb.alta/", "caption" => "Instagram"],
     ["img" => "github.png", "link" => "https://github.com/Arukast", "caption" => "GitHub"],
     ["img" => "Steam_icon_logo.svg", "link" => "https://steamcommunity.com/id/arukast/",  "caption" => "Steam"],
     ["img" => "linkedin.png", "link" => "https://linkedin.com/in/tubagus-alta", "caption" => "LinkedIn"]
