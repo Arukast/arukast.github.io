@@ -1,0 +1,19 @@
+{
+  "name": "Your Name",
+  "username": "sys_admin",
+  "domain": "yourname.dev",
+  "title": "DevOps / Linux / Backend Engineer",
+  "bio": "I specialize in automating resilient backend architectures, designing secure infrastructure pipelines, and building low-latency, system-oriented microservices. Obsessed with high availability, Linux systems, and automated declarative configuration.",
+  "avatarUrl": "https://placehold.co/150x150/18181b/10b981?text=SA",
+  "socials": {
+    "github": "https://github.com",
+    "linkedin": "https://linkedin.com",
+    "email": "mailto:name@domain.com"
+  },
+  "terminalFS": {
+    "about.md": "### About Me\nExperienced Infrastructure & DevOps Engineer, Linux Admin, and Backend Dev.\nSpecialized in securing cluster environments, setting up fast Caddy proxies, containerizing microservices pipelines, and writing optimized backend models in Go/Python.\nCore Principle: Clear documentation, low latency, 100% automated pipelines.",
+    "cv.txt": "SYSTEM RESUME DATA ACQUISITION RECORD\n======================================\n- Systems/Linux: Debian, Ubuntu Server, Proxmox Virtual Environments.\n- Containerization/DevOps: Docker, Docker Compose, Ansible, GitHub Actions, Caddy Proxy.\n- Backend Systems: Go (Golang), Python (FastAPI), Redis Cluster, PostgreSQL.\n- ICT Operations: DNS Zone controls, TLS/SSL automation, Portless Tunnels, Network Protection Layers.\n\nRun \"cat about.md\" or dispatch a POST message via the contact form to connect.",
+    "inventory.json": "{\n  \"operating_systems\": [\"Debian amd64\", \"Enterprise Linux\", \"Ubuntu Server\"],\n  \"virtualization\": [\"Proxmox PVE\", \"Docker Containers\", \"Docker Compose\"],\n  \"development\": [\"Go (Golang)\", \"Python (FastAPI)\", \"Bash Shell Scripting\"],\n  \"telemetry\": [\"Prometheus monitoring\", \"Node Exporters\", \"Grafana Dashboards\"]\n}",
+    "tunnel_manifest.yml": "tunnel: your-portfolio-tunnel\ncredentials-file: /root/.cloudflared/cert.json\ningress:\n  - hostname: demo.yourname.dev\n    service: http://localhost:8080\n  - hostname: monitor.yourname.dev\n    service: http://localhost:9090\n  - service: http_status:404"
+  }
+}

@@ -1,6 +1,7 @@
 ---
+import profile from '../data/profile.json';
 ---
-<section class="flex flex-col border border-[var(--border-color)] bg-zinc-950/80 rounded-2xl overflow-hidden shadow-xl min-h-[350px]">
+<section id="terminal-root" data-fs={JSON.stringify(profile.terminalFS)} class="flex flex-col border border-[var(--border-color)] bg-zinc-950/80 rounded-2xl overflow-hidden shadow-xl min-h-[350px]">
   <!-- Terminal Header Bar -->
   <div class="bg-zinc-900/40 border-b border-[var(--border-color)] px-4 py-3 flex justify-between items-center">
     <div class="flex items-center gap-1.5">
@@ -23,10 +24,10 @@
       <span class="text-[var(--accent-primary)]">~$</span> neofetch
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
-      <div class="text-[var(--accent-primary)] font-bold whitespace-pre leading-none flex items-center justify-center py-2 md:py-0 font-mono">
-        __ _ _ _ ___ _ _ _
-        / _` | || (_-< _` | \__,_|\_, /__/_| |_| |__/
-      </div>
+      <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight flex items-center justify-center py-2 md:py-0">
+  __ _ _ _ ___ _ _ _
+ / _` | || (_-< _` | \__,_|\_, /__/_| |_| |__/
+      </pre>
       <div class="space-y-1 text-zinc-400 font-mono text-[11px]">
         <p><strong class="text-zinc-200">OS:</strong> GNU/Linux Debian amd64</p>
         <p><strong class="text-zinc-200">Shell:</strong> Bash SSH-Virtualizer</p>
@@ -65,13 +66,11 @@
 </section>
 
 <script>
-  // Virtual File System Mock
-  const virtualFS: Record<string, string> = {
-    'about.md': '### About Me\nExperienced Infrastructure & DevOps Engineer, Linux Admin, and Backend Dev.\nSpecialized in securing cluster environments, setting up fast Caddy proxies, containerizing microservices pipelines, and writing optimized backend models in Go/Python.\nCore Principle: Clear documentation, low latency, 100% automated pipelines.',
-    'cv.txt': 'SYSTEM RESUME DATA ACQUISITION RECORD\n======================================\n- Systems/Linux: Debian, Ubuntu Server, Proxmox Virtual Environments.\n- Containerization/DevOps: Docker, Docker Compose, Ansible, GitHub Actions, Caddy Proxy.\n- Backend Systems: Go (Golang), Python (FastAPI), Redis Cluster, PostgreSQL.\n- ICT Operations: DNS Zone controls, TLS/SSL automation, Portless Tunnels, Network Protection Layers.\n\nRun "cat about.md" or dispatch a POST message via the contact form to connect.',
-    'inventory.json': '{\n  "operating_systems": ["Debian amd64", "Enterprise Linux", "Ubuntu Server"],\n  "virtualization": ["Proxmox PVE", "Docker Containers", "Docker Compose"],\n  "development": ["Go (Golang)", "Python (FastAPI)", "Bash Shell Scripting"],\n  "telemetry": ["Prometheus monitoring", "Node Exporters", "Grafana Dashboards"]\n}',
-    'tunnel_manifest.yml': 'tunnel: your-portfolio-tunnel\ncredentials-file: /root/.cloudflared/cert.json\ningress:\n  - hostname: demo.yourname.dev\n    service: http://localhost:8080\n  - hostname: monitor.yourname.dev\n    service: http://localhost:9090\n  - service: http_status:404'
-  };
+  // Virtual File System Mock loaded from profile.json data attributes
+  const rootEl = document.getElementById('terminal-root');
+  const virtualFS: Record<string, string> = rootEl && rootEl.dataset.fs
+    ? JSON.parse(rootEl.dataset.fs)
+    : {};
 
   function initTerminal() {
     const terminalHistory = document.getElementById('terminal-history');
@@ -140,12 +139,12 @@
         case 'neofetch':
           resultBlock.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
-              <div class="text-[var(--accent-primary)] font-bold whitespace-pre leading-none flex items-center justify-center font-mono">
+              <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight flex items-center justify-center py-2 md:py-0">
   __ _ _  _ ___ _ _ _ 
  / _\` | || (_ - <  _\` | 
- \\__,_|\\_, /__/_| |_| 
+ \\\\__,_|\\\\_, /__/_| |_| 
        |__/           
-              </div>
+              </pre>
               <div class="space-y-1 text-zinc-400 font-mono text-[11px]">
                 <p><strong class="text-zinc-100">User:</strong> sys_admin</p>
                 <p><strong class="text-zinc-100">Virtualizer:</strong> Proxmox Cluster Endpoint</p>
