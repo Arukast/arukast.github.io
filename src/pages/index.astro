@@ -50,7 +50,7 @@ const featuredProjects = allProjects.filter(project =>
         <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn Engineering Profile" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
           <i class="fa-brands fa-linkedin"></i>
         </a>
-        <a href={profile.socials.email} title="Email Developer Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+        <a href={`mailto:${profile.socials.email}`} title="Email Developer Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
           <i class="fa-solid fa-envelope"></i>
         </a>
         <a href="#contact" title="Contact API Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">

@@ -1,7 +1,7 @@
 ---
 import profile from '../data/profile.json';
 ---
-<section id="terminal-root" data-fs={JSON.stringify(profile.terminalFS)} class="flex flex-col border border-[var(--border-color)] bg-zinc-950/80 rounded-2xl overflow-hidden shadow-xl min-h-[350px]">
+<section id="terminal-root" data-fs={JSON.stringify(profile.terminalFS)} data-stats={JSON.stringify(profile.terminalStats)} class="flex flex-col border border-[var(--border-color)] bg-zinc-950/80 rounded-2xl overflow-hidden shadow-xl min-h-[350px]">
   <!-- Terminal Header Bar -->
   <div class="bg-zinc-900/40 border-b border-[var(--border-color)] px-4 py-3 flex justify-between items-center">
     <div class="flex items-center gap-1.5">
@@ -24,15 +24,21 @@ import profile from '../data/profile.json';
       <span class="text-[var(--accent-primary)]">~$</span> neofetch
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
-      <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight flex items-center justify-center py-2 md:py-0">
-  __ _ _ _ ___ _ _ _
- / _` | || (_-< _` | \__,_|\_, /__/_| |_| |__/
-      </pre>
+      <div class="flex items-center justify-center py-2 md:py-0">
+        <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight text-left whitespace-pre">
+    ___    __  _________ 
+   /   |  / / /_  __/   |
+  / /| | / /   / / / /| |
+ / ___ |/ /___/ / / ___ |
+/_/  |_/_____/_/ /_/  |_|
+                         
+        </pre>
+      </div>
       <div class="space-y-1 text-zinc-400 font-mono text-[11px]">
-        <p><strong class="text-zinc-200">OS:</strong> GNU/Linux Debian amd64</p>
-        <p><strong class="text-zinc-200">Shell:</strong> Bash SSH-Virtualizer</p>
-        <p><strong class="text-zinc-200">Infrastructure:</strong> Docker + Caddy Proxy</p>
-        <p><strong class="text-zinc-200">Target Area:</strong> Core DevOps / Infrastructure</p>
+        <p><strong class="text-zinc-200">OS:</strong> {profile.terminalStats.os}</p>
+        <p><strong class="text-zinc-200">Shell:</strong> {profile.terminalStats.shell}</p>
+        <p><strong class="text-zinc-200">Infrastructure:</strong> {profile.terminalStats.infrastructure}</p>
+        <p><strong class="text-zinc-200">Target Area:</strong> {profile.terminalStats.targetArea}</p>
       </div>
     </div>
   </div>
@@ -66,11 +72,14 @@ import profile from '../data/profile.json';
 </section>
 
 <script>
-  // Virtual File System Mock loaded from profile.json data attributes
+  // Virtual File System & stats loaded from profile.json data attributes
   const rootEl = document.getElementById('terminal-root');
   const virtualFS: Record<string, string> = rootEl && rootEl.dataset.fs
     ? JSON.parse(rootEl.dataset.fs)
     : {};
+  const stats = rootEl && rootEl.dataset.stats
+    ? JSON.parse(rootEl.dataset.stats)
+    : { os: 'unknown', shell: 'unknown', infrastructure: 'unknown', targetArea: 'unknown' };
 
   function initTerminal() {
     const terminalHistory = document.getElementById('terminal-history');
@@ -139,17 +148,19 @@ import profile from '../data/profile.json';
         case 'neofetch':
           resultBlock.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
-              <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight flex items-center justify-center py-2 md:py-0">
+              <div class="flex items-center justify-center py-2 md:py-0">
+                <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight text-left whitespace-pre">
   __ _ _  _ ___ _ _ _ 
  / _\` | || (_ - <  _\` | 
  \\\\__,_|\\\\_, /__/_| |_| 
        |__/           
-              </pre>
+                </pre>
+              </div>
               <div class="space-y-1 text-zinc-400 font-mono text-[11px]">
-                <p><strong class="text-zinc-100">User:</strong> sys_admin</p>
-                <p><strong class="text-zinc-100">Virtualizer:</strong> Proxmox Cluster Endpoint</p>
-                <p><strong class="text-zinc-100">Core OS:</strong> Linux 6.1.0-debian-amd64</p>
-                <p><strong class="text-zinc-100">Engine:</strong> HTML5 Static Web Container</p>
+                <p><strong class="text-zinc-100">OS:</strong> ${stats.os}</p>
+                <p><strong class="text-zinc-100">Shell:</strong> ${stats.shell}</p>
+                <p><strong class="text-zinc-100">Infrastructure:</strong> ${stats.infrastructure}</p>
+                <p><strong class="text-zinc-100">Target Area:</strong> ${stats.targetArea}</p>
               </div>
             </div>`;
           break;

@@ -1,14 +1,20 @@
 {
-  "name": "Your Name",
-  "username": "sys_admin",
-  "domain": "yourname.dev",
+  "name": "Tb. Alta Ulil Abshor (Alta)",
+  "username": "arukast",
+  "domain": "arukast.github.io",
   "title": "DevOps / Linux / Backend Engineer",
   "bio": "I specialize in automating resilient backend architectures, designing secure infrastructure pipelines, and building low-latency, system-oriented microservices. Obsessed with high availability, Linux systems, and automated declarative configuration.",
-  "avatarUrl": "https://placehold.co/150x150/18181b/10b981?text=SA",
+  "avatarUrl": "/Foto_Tb. Alta Ulil Abshor.jpg",
+  "terminalStats": {
+    "os": "GNU/Linux Debian amd64",
+    "shell": "Bash SSH-Virtualizer",
+    "infrastructure": "Docker + Caddy Proxy",
+    "targetArea": "Core DevOps / Infrastructure"
+  },
   "socials": {
-    "github": "https://github.com",
-    "linkedin": "https://linkedin.com",
-    "email": "mailto:name@domain.com"
+    "github": "https://github.com/Arukast",
+    "linkedin": "https://www.linkedin.com/in/tubagus-alta",
+    "email": "altatubagus@gmail.com"
   },
   "terminalFS": {
     "about.md": "### About Me\nExperienced Infrastructure & DevOps Engineer, Linux Admin, and Backend Dev.\nSpecialized in securing cluster environments, setting up fast Caddy proxies, containerizing microservices pipelines, and writing optimized backend models in Go/Python.\nCore Principle: Clear documentation, low latency, 100% automated pipelines.",
