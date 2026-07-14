@@ -1,0 +1,208 @@
+---
+---
+<section class="flex flex-col border border-[var(--border-color)] bg-zinc-950/80 rounded-2xl overflow-hidden shadow-xl min-h-[350px]">
+  <!-- Terminal Header Bar -->
+  <div class="bg-zinc-900/40 border-b border-[var(--border-color)] px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center gap-1.5">
+      <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
+      <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
+      <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
+      <span class="font-mono text-[11px] text-zinc-500 ml-2">sys_diagnose.sh</span>
+    </div>
+    <span class="font-mono text-[9px] bg-zinc-900 text-zinc-500 px-2 py-0.5 rounded border border-[var(--border-color)]">
+      interactive CLI
+    </span>
+  </div>
+
+  <!-- Terminal History Content -->
+  <div id="terminal-history" class="p-6 font-mono text-xs text-zinc-400 space-y-4 flex-grow overflow-y-auto max-h-[300px]">
+    <div class="text-zinc-600 italic">
+      Web-virtualized SSH tunnel active. Run "help" or click presets to inspect local registers.
+    </div>
+    <div>
+      <span class="text-[var(--accent-primary)]">~$</span> neofetch
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
+      <div class="text-[var(--accent-primary)] font-bold whitespace-pre leading-none flex items-center justify-center py-2 md:py-0 font-mono">
+        __ _ _ _ ___ _ _ _
+        / _` | || (_-< _` | \__,_|\_, /__/_| |_| |__/
+      </div>
+      <div class="space-y-1 text-zinc-400 font-mono text-[11px]">
+        <p><strong class="text-zinc-200">OS:</strong> GNU/Linux Debian amd64</p>
+        <p><strong class="text-zinc-200">Shell:</strong> Bash SSH-Virtualizer</p>
+        <p><strong class="text-zinc-200">Infrastructure:</strong> Docker + Caddy Proxy</p>
+        <p><strong class="text-zinc-200">Target Area:</strong> Core DevOps / Infrastructure</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLI Touch Presets -->
+  <div id="terminal-presets" class="px-5 py-2.5 border-t border-[var(--border-color)] bg-zinc-900/10 flex flex-wrap gap-2 items-center">
+    <span class="text-[9px] text-zinc-500 uppercase font-mono tracking-wider">Directives:</span>
+    <button data-cmd="help" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-[10px] border border-[var(--border-color)] transition cursor-pointer">
+      help
+    </button>
+    <button data-cmd="ls" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-[10px] border border-[var(--border-color)] transition cursor-pointer">
+      ls
+    </button>
+    <button data-cmd="cat about.md" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-[10px] border border-[var(--border-color)] transition cursor-pointer">
+      about.md
+    </button>
+    <button data-cmd="cat cv.txt" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-[10px] border border-[var(--border-color)] transition cursor-pointer">
+      cv.txt
+    </button>
+    <button data-cmd="clear" class="px-2 py-1 bg-rose-950/20 hover:bg-rose-900/20 text-rose-400/80 rounded-md font-mono text-[10px] border border-rose-900/30 transition cursor-pointer">
+      clear
+    </button>
+  </div>
+
+  <!-- Terminal Command Input Line -->
+  <form id="terminal-form" class="bg-zinc-950 px-5 py-3 border-t border-[var(--border-color)] flex items-center gap-2">
+    <span class="font-mono text-sm text-[var(--accent-primary)] font-bold">~$</span>
+    <input type="text" id="terminal-input" autocomplete="off" class="flex-grow bg-transparent text-zinc-100 font-mono text-xs outline-none border-none placeholder-zinc-700" placeholder="Type core diagnostics commands..." />
+    <span class="terminal-cursor bg-[var(--accent-primary)] animate-blink"></span>
+  </form>
+</section>
+
+<script>
+  // Virtual File System Mock
+  const virtualFS: Record<string, string> = {
+    'about.md': '### About Me\nExperienced Infrastructure & DevOps Engineer, Linux Admin, and Backend Dev.\nSpecialized in securing cluster environments, setting up fast Caddy proxies, containerizing microservices pipelines, and writing optimized backend models in Go/Python.\nCore Principle: Clear documentation, low latency, 100% automated pipelines.',
+    'cv.txt': 'SYSTEM RESUME DATA ACQUISITION RECORD\n======================================\n- Systems/Linux: Debian, Ubuntu Server, Proxmox Virtual Environments.\n- Containerization/DevOps: Docker, Docker Compose, Ansible, GitHub Actions, Caddy Proxy.\n- Backend Systems: Go (Golang), Python (FastAPI), Redis Cluster, PostgreSQL.\n- ICT Operations: DNS Zone controls, TLS/SSL automation, Portless Tunnels, Network Protection Layers.\n\nRun "cat about.md" or dispatch a POST message via the contact form to connect.',
+    'inventory.json': '{\n  "operating_systems": ["Debian amd64", "Enterprise Linux", "Ubuntu Server"],\n  "virtualization": ["Proxmox PVE", "Docker Containers", "Docker Compose"],\n  "development": ["Go (Golang)", "Python (FastAPI)", "Bash Shell Scripting"],\n  "telemetry": ["Prometheus monitoring", "Node Exporters", "Grafana Dashboards"]\n}',
+    'tunnel_manifest.yml': 'tunnel: your-portfolio-tunnel\ncredentials-file: /root/.cloudflared/cert.json\ningress:\n  - hostname: demo.yourname.dev\n    service: http://localhost:8080\n  - hostname: monitor.yourname.dev\n    service: http://localhost:9090\n  - service: http_status:404'
+  };
+
+  function initTerminal() {
+    const terminalHistory = document.getElementById('terminal-history');
+    const terminalInput = document.getElementById('terminal-input') as HTMLInputElement | null;
+    const terminalForm = document.getElementById('terminal-form');
+    const terminalPresets = document.getElementById('terminal-presets');
+
+    if (!terminalHistory || !terminalInput || !terminalForm) return;
+
+    // Direct execution path for click events and controls
+    function executeCommand(cmdStr: string) {
+      if (!terminalInput) return;
+      terminalInput.value = cmdStr;
+      handleCommand(cmdStr);
+      terminalInput.value = '';
+    }
+
+    // Attach to window so dynamically created elements or other handlers can call it
+    (window as any).executeCommand = executeCommand;
+
+    // Interactive SSH Terminal Command Handler
+    function handleCommand(cmdLine: string) {
+      const trimmed = cmdLine.trim();
+      if (!trimmed) return;
+
+      // Log command line to history trace
+      const userLine = document.createElement('div');
+      userLine.innerHTML = `<span class="text-[var(--accent-primary)] font-bold">~$</span> ${cmdLine}`;
+      terminalHistory!.appendChild(userLine);
+
+      const parts = trimmed.split(' ');
+      const command = parts[0].toLowerCase();
+      const arg = parts.slice(1).join(' ');
+
+      const resultBlock = document.createElement('div');
+      resultBlock.className = 'text-zinc-300 text-xs pl-2 leading-relaxed font-mono';
+
+      switch (command) {
+        case 'help':
+          resultBlock.innerHTML = `
+            <p class="text-[var(--accent-primary)] font-bold mb-1">Diagnostic Commands Available:</p>
+            <ul class="space-y-1 pl-2 text-zinc-400 font-mono text-[11px]">
+              <li><span class="text-zinc-200 font-semibold">ls</span> - List configuration assets & virtual markdown records</li>
+              <li><span class="text-zinc-200 font-semibold">cat &lt;file&gt;</span> - Print contents of selected registry file</li>
+              <li><span class="text-zinc-200 font-semibold">neofetch</span> - Render underlying platform capabilities</li>
+              <li><span class="text-zinc-200 font-semibold">uptime</span> - Display total node active cycle time</li>
+              <li><span class="text-zinc-200 font-semibold">clear</span> - Flush terminal activity viewport logs</li>
+              <li><span class="text-zinc-200 font-semibold">sudo &lt;cmd&gt;</span> - Attempt administrator escalation sequence</li>
+            </ul>`;
+          break;
+        case 'ls':
+          const files = Object.keys(virtualFS)
+            .map(f => `<span class="text-[var(--accent-primary)] font-semibold hover:underline cursor-pointer" onclick="executeCommand('cat ${f}')"><i class="fa-regular fa-file-lines mr-1 text-[10px]"></i> ${f}</span>`)
+            .join(' &nbsp;&nbsp;&nbsp; ');
+          resultBlock.innerHTML = `<div class="mt-1 flex flex-wrap gap-x-4 gap-y-1">${files}</div>`;
+          break;
+        case 'cat':
+          if (!arg) {
+            resultBlock.innerHTML = `<span class="text-rose-400">Error: Target file parameters omitted. (e.g. "cat about.md")</span>`;
+          } else if (virtualFS[arg]) {
+            resultBlock.innerHTML = `<div class="bg-zinc-950 p-3 rounded-lg border border-[var(--border-color)] whitespace-pre-wrap text-zinc-400">${virtualFS[arg]}</div>`;
+          } else {
+            resultBlock.innerHTML = `<span class="text-rose-400">Error: Target file parameter "/${arg}" not found in filesystem logs.</span>`;
+          }
+          break;
+        case 'neofetch':
+          resultBlock.innerHTML = `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
+              <div class="text-[var(--accent-primary)] font-bold whitespace-pre leading-none flex items-center justify-center font-mono">
+  __ _ _  _ ___ _ _ _ 
+ / _\` | || (_ - <  _\` | 
+ \\__,_|\\_, /__/_| |_| 
+       |__/           
+              </div>
+              <div class="space-y-1 text-zinc-400 font-mono text-[11px]">
+                <p><strong class="text-zinc-100">User:</strong> sys_admin</p>
+                <p><strong class="text-zinc-100">Virtualizer:</strong> Proxmox Cluster Endpoint</p>
+                <p><strong class="text-zinc-100">Core OS:</strong> Linux 6.1.0-debian-amd64</p>
+                <p><strong class="text-zinc-100">Engine:</strong> HTML5 Static Web Container</p>
+              </div>
+            </div>`;
+          break;
+        case 'uptime':
+          const uptimeEl = document.getElementById('uptime-counter');
+          const uptimeStr = uptimeEl ? uptimeEl.textContent : 'unknown';
+          resultBlock.innerHTML = `Virtual node runtime status: <span class="text-[var(--accent-primary)] font-semibold">${uptimeStr}</span>.`;
+          break;
+        case 'clear':
+          terminalHistory!.innerHTML = '<div class="text-zinc-600 italic">Web-virtualized SSH tunnel active. Run "help" or click presets to inspect local registers.</div>';
+          if (terminalInput) terminalInput.value = '';
+          return;
+        case 'sudo':
+          resultBlock.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Privilege validation failed. Incident logged.</span>`;
+          if ((window as any).showToast) {
+            (window as any).showToast("ROOT_BLOCK", "Administrative escalation blocked safely by security filters.", "warning");
+          }
+          break;
+        default:
+          resultBlock.innerHTML = `<span class="text-rose-400">Command "${command}" unrecognized. Write "help" to view diagnostic listings.</span>`;
+      }
+
+      terminalHistory!.appendChild(resultBlock);
+      // Auto scroll to latest terminal input
+      terminalHistory!.scrollTop = terminalHistory!.scrollHeight;
+    }
+
+    // Attach form submit handler
+    terminalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!terminalInput) return;
+      const val = terminalInput.value;
+      handleCommand(val);
+      terminalInput.value = '';
+    });
+
+    // Attach presets click handler
+    if (terminalPresets) {
+      terminalPresets.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest('button[data-cmd]');
+        if (btn) {
+          const cmd = btn.getAttribute('data-cmd');
+          if (cmd) {
+            executeCommand(cmd);
+          }
+        }
+      });
+    }
+  }
+
+  // Support Astro view transitions
+  document.addEventListener('astro:page-load', () => {
+    initTerminal();
+  });
+</script>

@@ -1,0 +1,92 @@
+---
+---
+<section id="contact" class="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 backdrop-blur-sm flex flex-col gap-4">
+  <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3">
+    <h2 class="font-mono text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+      <span class="text-[var(--accent-primary)]"><i class="fa-regular fa-envelope"></i></span>
+      POST /api/v1/contact
+    </h2>
+    <span class="text-[9px] bg-zinc-900/60 px-2 py-0.5 rounded border border-[var(--border-color)] text-zinc-500 font-mono">
+      API Connection
+    </span>
+  </div>
+
+  <form id="contact-form" class="space-y-4 font-mono text-xs">
+    <div class="space-y-1.5">
+      <label class="block text-zinc-500" for="contact-name">&gt; client_name</label>
+      <input type="text" id="contact-name" required class="w-full bg-zinc-950 border border-[var(--border-color)] rounded-lg px-3 py-2 text-zinc-100 focus:outline-none focus:border-[var(--accent-primary)] font-mono transition" placeholder="Ingress Sender Name" />
+    </div>
+    <div class="space-y-1.5">
+      <label class="block text-zinc-500" for="contact-email">&gt; client_email</label>
+      <input type="email" id="contact-email" required class="w-full bg-zinc-950 border border-[var(--border-color)] rounded-lg px-3 py-2 text-zinc-100 focus:outline-none focus:border-[var(--accent-primary)] font-mono transition" placeholder="name@domain.com" />
+    </div>
+    <div class="space-y-1.5">
+      <label class="block text-zinc-500" for="contact-message">&gt; payload_body</label>
+      <textarea id="contact-message" required rows="3" class="w-full bg-zinc-950 border border-[var(--border-color)] rounded-lg px-3 py-2 text-zinc-100 focus:outline-none focus:border-[var(--accent-primary)] font-mono transition resize-none" placeholder="Write message body content here..."></textarea>
+    </div>
+    <button type="submit" class="w-full py-2.5 bg-zinc-900 hover:bg-[var(--accent-primary)] hover:text-black border border-[var(--border-color)] hover:border-[var(--accent-primary)] transition-all duration-300 rounded-lg font-bold font-mono tracking-wide flex items-center justify-center gap-2 cursor-pointer">
+      <i class="fa-solid fa-cloud-arrow-up"></i> EXECUTE_POST_REQUEST
+    </button>
+  </form>
+
+  <!-- Live Simulated API Server Response Panel -->
+  <div id="api-response-panel" class="hidden p-4 bg-zinc-950 border border-[var(--border-color)] rounded-xl font-mono text-[10px] text-zinc-300 space-y-3">
+    <div class="flex justify-between items-center text-zinc-500 border-b border-zinc-900 pb-2">
+      <span>HTTP/1.1 202 Accepted</span>
+      <span>application/json</span>
+    </div>
+    <pre id="api-response-code" class="overflow-x-auto whitespace-pre-wrap leading-relaxed text-[var(--accent-primary)]"></pre>
+  </div>
+</section>
+
+<script>
+  function initContactForm() {
+    const contactForm = document.getElementById('contact-form');
+    const responsePanel = document.getElementById('api-response-panel');
+    const responseCode = document.getElementById('api-response-code');
+
+    const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
+    const emailInput = document.getElementById('contact-email') as HTMLInputElement | null;
+    const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+
+    if (!contactForm || !responsePanel || !responseCode || !nameInput || !emailInput || !messageInput) return;
+
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const clientName = nameInput.value;
+      const clientEmail = emailInput.value;
+      const clientMessage = messageInput.value;
+
+      // Render simulated dynamic JSON response payloads
+      const mockJSON = {
+        "status": 202,
+        "status_text": "Accepted",
+        "transaction_id": "TX_FLOW_" + Math.random().toString(36).substring(2, 9).toUpperCase(),
+        "node_ingress_proxy": "cloudflare_tunnel_ingress_vm",
+        "payload": {
+          "origin_client": clientName,
+          "ingress_email": clientEmail,
+          "payload_size_bytes": clientMessage.length
+        },
+        "dispatched_at": new Date().toISOString()
+      };
+
+      responseCode.textContent = JSON.stringify(mockJSON, null, 2);
+      responsePanel.classList.remove('hidden');
+
+      // Clear inputs cleanly
+      nameInput.value = '';
+      emailInput.value = '';
+      messageInput.value = '';
+
+      if ((window as any).showToast) {
+        (window as any).showToast("POST_ACCEPTED", "Message successfully buffered in system memory.");
+      }
+    });
+  }
+
+  // Setup listener for page-load
+  document.addEventListener('astro:page-load', () => {
+    initContactForm();
+  });
+</script>

@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Terminal from '../components/Terminal.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+// We feature api-queue and ingress-tunnel on the home page as in the original index.html
+const featuredProjects = allProjects.filter(project => 
+  project.id === 'api-queue' || project.id === 'ingress-tunnel'
+);
+---
+
+<Layout>
+  <!-- Minimal System Header Console Bar -->
+  <Navbar />
+
+  <main class="flex-grow max-w-3xl w-full mx-auto px-6 py-10 space-y-12">
+    <!-- Profile Section -->
+    <section class="flex flex-col items-center text-center p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 relative overflow-hidden backdrop-blur-sm">
+      <div class="absolute -right-12 -top-12 w-48 h-48 bg-[var(--accent-primary)]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Avatar with pulse indicator -->
+      <div class="relative mb-6">
+        <img src="https://placehold.co/150x150/18181b/10b981?text=SA" alt="Profile Avatar" onerror="this.src='https://placehold.co/150x150/111/fff?text=User'" class="w-24 h-24 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-1 bg-zinc-900" />
+        <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-4 border-[var(--bg-primary)] rounded-full"></div>
+      </div>
+
+      <!-- Bio Details -->
+      <div class="space-y-3 max-w-xl">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-500 bg-zinc-900/60 px-2.5 py-1 rounded-md border border-[var(--border-color)]">
+          DevOps / Linux / Backend Engineer
+        </span>
+        <h1 class="text-3xl font-bold tracking-tight">Your Name</h1>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          I specialize in automating resilient backend architectures, designing secure infrastructure pipelines, and building low-latency, system-oriented microservices. Obsessed with high availability, Linux systems, and automated declarative configuration.
+        </p>
+      </div>
+
+      <!-- Social Media List -->
+      <div class="flex items-center justify-center gap-5 mt-6 pt-6 border-t border-zinc-900/60 w-full max-w-md">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub Infrastructure Code" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn Engineering Profile" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" title="X Profile" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" title="Discord Guild Link" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+          <i class="fa-brands fa-discord"></i>
+        </a>
+        <a href="#contact" title="Contact API Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+          <i class="fa-solid fa-envelope-open-text"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Interactive CLI Terminal Simulator (sys_diagnose.sh) -->
+    <Terminal />
+
+    <!-- Featured Project Previews -->
+    <section class="space-y-6">
+      <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3">
+        <h2 class="font-mono text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+          <span class="text-[var(--accent-primary)]">//</span> Core Projects Overview
+        </h2>
+        <span class="text-[10px] text-zinc-500 font-mono">Standout Cases</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredProjects.map(project => (
+          <ProjectCard
+            slug={project.id}
+            title={project.data.title}
+            description={project.data.description}
+            category={project.data.category}
+            status={project.data.status}
+            tags={project.data.tags}
+            githubUrl={project.data.githubUrl}
+            architecture={project.data.architecture}
+            expanded={false}
+            icon={project.data.icon}
+          />
+        ))}
+      </div>
+
+      <!-- Deep Project Directory Target Link -->
+      <div class="pt-4 text-center">
+        <a href="/projects" class="inline-flex items-center gap-2 font-mono text-xs text-[var(--accent-primary)] hover:text-emerald-300 transition group bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-zinc-700 px-5 py-3 rounded-xl cursor-pointer">
+          <i class="fa-solid fa-folder-open"></i> VIEW COMPREHENSIVE PROJECT DIRECTORY
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Contact Box & Simulated POST Request CLI Console -->
+    <ContactForm />
+  </main>
+
+  <!-- Minimal System Footer -->
+  <Footer />
+</Layout>
+

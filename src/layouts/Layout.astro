@@ -1,0 +1,81 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "sys_admin@portfolio:~# - Systems & Infrastructure Engineer",
+  description = "Specializing in automating resilient backend architectures, infrastructure pipelines, and building low-latency microservices."
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <ClientRouter />
+</head>
+<body class="bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen flex flex-col font-sans transition-all duration-300 selection:bg-[var(--accent-primary)] selection:text-black">
+  
+  <!-- Alert Notification System Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] text-zinc-200 px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3">
+      <span id="toast-icon" class="text-[var(--accent-primary)]"><i class="fa-solid fa-circle-check"></i></span>
+      <div>
+        <p id="toast-title" class="font-mono text-[10px] font-bold text-zinc-500 uppercase tracking-wider">ALERT_DAEMON</p>
+        <p id="toast-body" class="text-xs text-zinc-300">Action deployed successfully.</p>
+      </div>
+    </div>
+  </div>
+
+  <slot />
+
+  <script>
+    // Global Toast Controller
+    function showToast(title: string, body: string, type: "success" | "warning" = "success") {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastBody = document.getElementById('toast-body');
+      const toastIcon = document.getElementById('toast-icon');
+
+      if (!toast || !toastTitle || !toastBody || !toastIcon) return;
+
+      toastTitle.textContent = title;
+      toastBody.textContent = body;
+
+      if (type === "success") {
+        toastIcon.innerHTML = `<i class="fa-solid fa-circle-check text-[var(--accent-primary)]"></i>`;
+      } else {
+        toastIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-500"></i>`;
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // Attach to window so it is accessible from components
+    (window as any).showToast = showToast;
+  </script>
+</body>
+</html>

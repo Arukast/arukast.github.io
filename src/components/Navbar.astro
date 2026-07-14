@@ -1,0 +1,38 @@
+---
+const pathname = Astro.url.pathname;
+
+const isHome = pathname === '/' || pathname === '';
+const isProjects = pathname.startsWith('/projects');
+---
+
+<header class="sticky top-0 z-40 bg-[var(--bg-primary)]/80 backdrop-blur-md border-b border-[var(--border-color)] px-6 py-4 transition-all duration-300">
+  <div class="max-w-3xl mx-auto flex justify-between items-center gap-4">
+    <div class="flex items-center gap-3">
+      <a href="/" class="font-mono text-sm tracking-tight hover:opacity-80 flex items-center gap-2">
+        <span class="text-[var(--accent-primary)]"><i class="fa-solid fa-terminal"></i></span>
+        <span class="font-bold">sys_admin@yourname.dev</span><span class="text-zinc-600">:~#</span>
+      </a>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <!-- Navigation Tabs -->
+      <nav class="flex gap-4 text-xs font-mono">
+        <a href="/" class={`hover:text-[var(--accent-primary)] transition-colors py-1 ${isHome ? 'text-[var(--accent-primary)] font-semibold' : 'text-zinc-400'}`}>
+          /home
+        </a>
+        <a href="/projects" class={`hover:text-[var(--accent-primary)] transition-colors py-1 ${isProjects ? 'text-[var(--accent-primary)] font-semibold' : 'text-zinc-400'}`}>
+          /projects
+        </a>
+      </nav>
+
+      <!-- Live Nodes Counter -->
+      <div class="flex items-center gap-2 px-2.5 py-1 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg font-mono text-[10px] hidden sm:flex">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+        </span>
+        <span class="text-zinc-400 uppercase tracking-wider text-[9px] font-medium">Node: Active</span>
+      </div>
+    </div>
+  </div>
+</header>

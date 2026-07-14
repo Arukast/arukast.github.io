@@ -1,0 +1,52 @@
+---
+---
+<footer class="mt-12 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]/10 py-8 px-6 transition-colors duration-300">
+  <div class="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-zinc-500">
+    <div class="text-center sm:text-left space-y-1">
+      <p>© 2026 Systems Portfolio Engine. Powered by static components.</p>
+      <p class="text-[10px] text-zinc-600">Runtime compile: 0.0012s. Uptime verified active.</p>
+    </div>
+
+    <div class="flex flex-col items-center sm:items-end gap-2 text-right">
+      <div class="text-[10px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-2 py-1 rounded">
+        <i class="fa-regular fa-clock text-[var(--accent-primary)] mr-1"></i>
+        <span id="uptime-counter">UP: 00d:00h:00m:00s</span>
+      </div>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--accent-primary)] transition-colors flex items-center gap-1.5 underline underline-offset-4 decoration-zinc-800 text-[10px]">
+        <i class="fa-brands fa-github"></i> deployment_pipeline.yml
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let systemStartSeconds = Math.floor(Math.random() * 400000) + 600000;
+  let uptimeInterval: number | undefined = undefined;
+
+  function startUptimeCounter() {
+    const counterEl = document.getElementById('uptime-counter');
+    if (!counterEl) return;
+
+    if (uptimeInterval !== undefined) {
+      clearInterval(uptimeInterval);
+    }
+
+    uptimeInterval = setInterval(() => {
+      systemStartSeconds++;
+      const days = Math.floor(systemStartSeconds / (24 * 3600));
+      const hrs = Math.floor((systemStartSeconds % (24 * 3600)) / 3600);
+      const mins = Math.floor((systemStartSeconds % 3600) / 60);
+      const secs = systemStartSeconds % 60;
+      
+      const el = document.getElementById('uptime-counter');
+      if (el) {
+        el.textContent = `UP: ${String(days).padStart(2, '0')}d:${String(hrs).padStart(2, '0')}h:${String(mins).padStart(2, '0')}m:${String(secs).padStart(2, '0')}s`;
+      }
+    }, 1000) as unknown as number;
+  }
+
+  // Setup interval on astro load
+  document.addEventListener('astro:page-load', () => {
+    startUptimeCounter();
+  });
+</script>
