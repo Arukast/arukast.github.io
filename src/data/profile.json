@@ -2,13 +2,14 @@
   "name": "Tb. Alta Ulil Abshor (Alta)",
   "username": "arukast",
   "domain": "arukast.github.io",
-  "title": "DevOps / Linux / Backend Engineer",
-  "bio": "I specialize in automating resilient backend architectures, designing secure infrastructure pipelines, and building low-latency, system-oriented microservices. Obsessed with high availability, Linux systems, and automated declarative configuration.",
+  "title": "Infrastructure & Back-End Enthusiast",
+  "bio": "Information Systems student at Telkom University and Enterprise Infrastructure Management Lab Staff. Focused on self-hosted infrastructure, back-end development, and open-source tooling, backed by hands-on experience running a personal Proxmox homelab.",
   "avatarUrl": "/Foto_Tb. Alta Ulil Abshor.jpg",
+  "cvUrl": "/CV_Tubagus_Alta.pdf",
   "terminalStats": {
-    "os": "GNU/Linux Debian amd64",
-    "shell": "Bash SSH-Virtualizer",
-    "infrastructure": "Docker + Caddy Proxy",
+    "os": "GNU/Linux Arch Linux x86_64",
+    "shell": "Fish SSH-Virtualizer",
+    "infrastructure": "Proxmox VE + Docker Containers",
     "targetArea": "Core DevOps / Infrastructure"
   },
   "socials": {
@@ -17,9 +18,9 @@
     "email": "altatubagus@gmail.com"
   },
   "terminalFS": {
-    "about.md": "### About Me\nExperienced Infrastructure & DevOps Engineer, Linux Admin, and Backend Dev.\nSpecialized in securing cluster environments, setting up fast Caddy proxies, containerizing microservices pipelines, and writing optimized backend models in Go/Python.\nCore Principle: Clear documentation, low latency, 100% automated pipelines.",
-    "cv.txt": "SYSTEM RESUME DATA ACQUISITION RECORD\n======================================\n- Systems/Linux: Debian, Ubuntu Server, Proxmox Virtual Environments.\n- Containerization/DevOps: Docker, Docker Compose, Ansible, GitHub Actions, Caddy Proxy.\n- Backend Systems: Go (Golang), Python (FastAPI), Redis Cluster, PostgreSQL.\n- ICT Operations: DNS Zone controls, TLS/SSL automation, Portless Tunnels, Network Protection Layers.\n\nRun \"cat about.md\" or dispatch a POST message via the contact form to connect.",
-    "inventory.json": "{\n  \"operating_systems\": [\"Debian amd64\", \"Enterprise Linux\", \"Ubuntu Server\"],\n  \"virtualization\": [\"Proxmox PVE\", \"Docker Containers\", \"Docker Compose\"],\n  \"development\": [\"Go (Golang)\", \"Python (FastAPI)\", \"Bash Shell Scripting\"],\n  \"telemetry\": [\"Prometheus monitoring\", \"Node Exporters\", \"Grafana Dashboards\"]\n}",
+    "about.md": "### About Me\nI'm an Information Systems student at Telkom University, currently serving as Enterprise Infrastructure Management Lab Staff. My focus lies in self-hosted infrastructure, back-end development, and open-source tooling, backed by hands-on experience running a personal Proxmox homelab.\n\nI actively work on projects involving Docker, Nginx, local LLM inference (llama.cpp + llama-swap), OpenWrt networking, and Laravel-based web applications.\n\nCurrently open to internship opportunities in Infrastructure, DevOps, or Back-End Development.",
+    "cv.txt": "SYSTEM RESUME DATA ACQUISITION RECORD\n======================================\n- Role: Enterprise Infrastructure Management Lab Staff\n- Education: Information Systems @ Telkom University\n- Linux/Virtualization: Proxmox PVE, Docker, Nginx, OpenWrt\n- Development/Backend: Laravel, PHP, LLM Inference (llama.cpp)\n\n[Download the public sanitized PDF from the homepage dashboard button]\n[Request full CV (with phone & references) via altatubagus@gmail.com]",
+    "inventory.json": "{\n  \"operating_systems\": [\"Arch Linux\", \"Debian Server\", \"Ubuntu Server\"],\n  \"virtualization\": [\"Proxmox PVE\", \"Docker Containers\", \"Docker Compose\"],\n  \"development\": [\"PHP (Laravel)\", \"Python\", \"local LLM inference (llama.cpp)\"],\n  \"networking\": [\"OpenWrt\", \"Nginx Web Server\"]\n}",
     "tunnel_manifest.yml": "tunnel: your-portfolio-tunnel\ncredentials-file: /root/.cloudflared/cert.json\ningress:\n  - hostname: demo.yourname.dev\n    service: http://localhost:8080\n  - hostname: monitor.yourname.dev\n    service: http://localhost:9090\n  - service: http_status:404"
   }
 }
