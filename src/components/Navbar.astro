@@ -148,15 +148,26 @@ const isHome = pathname === '/' || pathname === '';
       
       const isCurrentHome = window.location.pathname === '/' || window.location.pathname === '';
       let activeNav = isCurrentHome ? 'home' : '';
-      const scrollPosition = window.scrollY + 180; // offset threshold
       
       if (isCurrentHome) {
+        const viewportCenter = window.innerHeight / 2;
+        
         sections.forEach(section => {
           const el = document.getElementById(section.id);
-          if (el && scrollPosition >= el.offsetTop) {
-            activeNav = section.nav;
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            // Highlight section if viewport center is inside its boundary
+            if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
+              activeNav = section.nav;
+            }
           }
         });
+
+        // Force contact highlight if scrolled to the absolute bottom
+        const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
+        if (isAtBottom) {
+          activeNav = 'contact';
+        }
       }
       
       links.forEach(link => {
@@ -182,12 +193,12 @@ const isHome = pathname === '/' || pathname === '';
           const hash = href.substring(hashIndex);
           
           e.preventDefault();
-          if (hash === '#') {
+          if (hash === '#' || hash === '#home') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           } else {
             const targetEl = document.querySelector(hash);
             if (targetEl) {
-              targetEl.scrollIntoView({ behavior: 'smooth' });
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           }
         }
