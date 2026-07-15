@@ -32,10 +32,10 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
 <Layout title={`${entry.data.title} - Case Study`} description={entry.data.description}>
   <Navbar />
 
-  <main class="flex-grow max-w-3xl w-full mx-auto px-6 py-10 space-y-8">
+  <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-10 space-y-8">
     <section class="space-y-4">
       <!-- Back button and Navigation Context -->
-      <div class="flex justify-between items-center text-xs font-mono text-zinc-500">
+      <div class="flex justify-between items-center text-sm font-mono text-zinc-400">
         <span>/projects_inventory/{entry.slug}.md</span>
         <a href="/projects" class="text-zinc-400 hover:text-[var(--accent-primary)] transition flex items-center gap-1.5 bg-zinc-900 border border-[var(--border-color)] px-2.5 py-1 rounded-lg">
           <i class="fa-solid fa-arrow-left"></i> back_to_directory
@@ -45,18 +45,18 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
       <!-- Title Header Block -->
       <div class="border-b border-[var(--border-color)] pb-6 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <h1 class="text-2xl font-bold font-mono text-white tracking-tight">{entry.data.title}</h1>
-          <span class={`text-[10px] font-mono border px-2.5 py-0.5 rounded-md ${statusColor}`}>
+          <h1 class="text-3xl font-bold font-mono text-white tracking-tight">{entry.data.title}</h1>
+          <span class={`text-xs font-mono border px-2.5 py-0.5 rounded-md ${statusColor}`}>
             {entry.data.status}
           </span>
         </div>
 
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-mono text-zinc-500">
-          <span><strong class="text-zinc-400">Category:</strong> {entry.data.category}</span>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono text-zinc-400">
+          <span><strong class="text-zinc-300">Category:</strong> {entry.data.category}</span>
           <span>•</span>
           <div class="flex gap-1.5">
             {entry.data.tags.map(tag => (
-              <span class="bg-zinc-900 px-1.5 py-0.2 rounded border border-zinc-800 text-[10px] text-zinc-400">{tag}</span>
+              <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800 text-[11px] text-zinc-400">{tag}</span>
             ))}
           </div>
         </div>
@@ -65,9 +65,9 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
 
     <!-- Project Architecture flow diagram if available -->
     {entry.data.architecture && entry.data.architecture.length > 0 && (
-      <section class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-[10px] text-zinc-400 space-y-2">
-        <p class="text-zinc-500">// Infrastructure Path Flow</p>
-        <div class="flex flex-wrap items-center gap-2 text-xs">
+      <section class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-[11px] text-zinc-400 space-y-2">
+        <p class="text-zinc-400">// Infrastructure Path Flow</p>
+        <div class="flex flex-wrap items-center gap-2 text-[13px]">
           {entry.data.architecture.map((node, index) => (
             <>
               {index > 0 && <span class="text-zinc-600">→</span>}
@@ -86,8 +86,8 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     </article>
 
     <!-- Source Link Footer -->
-    <div class="pt-6 border-t border-[var(--border-color)] flex justify-between items-center text-xs font-mono">
-      <span class="text-zinc-500">Sources available under public GPL v3.</span>
+    <div class="pt-6 border-t border-[var(--border-color)] flex justify-between items-center text-sm font-mono">
+      <span class="text-zinc-400">Sources available under public GPL v3.</span>
       <a href={entry.data.githubUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
         <i class="fa-brands fa-github"></i> view_sources.git
       </a>
@@ -100,7 +100,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
 <style is:global>
   /* Markdown Typography overrides */
   .project-content h3 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     color: #f4f4f5;
     border-bottom: 1px solid var(--border-color);
@@ -112,7 +112,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
   }
   .project-content p {
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.6;
     margin-bottom: 14px;
     color: #a1a1aa;
@@ -122,7 +122,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     padding-left: 20px;
     margin-bottom: 14px;
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     color: #a1a1aa;
   }
   .project-content li {
@@ -138,7 +138,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     border-radius: 4px;
     padding: 2px 6px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     color: var(--accent-primary);
   }
   .project-content pre {
@@ -153,7 +153,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     background: transparent;
     border: none;
     padding: 0;
-    font-size: 11px;
+    font-size: 13px;
     color: #f4f4f5;
   }
 </style>

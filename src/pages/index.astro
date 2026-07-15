@@ -20,43 +20,43 @@ const featuredProjects = allProjects.filter(project =>
   <!-- Minimal System Header Console Bar -->
   <Navbar />
 
-  <main class="flex-grow max-w-3xl w-full mx-auto px-6 py-10 space-y-12">
+  <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-10 space-y-12">
     <!-- Profile Section -->
     <section class="flex flex-col items-center text-center p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 relative overflow-hidden backdrop-blur-sm">
       <div class="absolute -right-12 -top-12 w-48 h-48 bg-[var(--accent-primary)]/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <!-- Avatar with pulse indicator -->
       <div class="relative mb-6">
-        <img src={profile.avatarUrl} alt="Profile Avatar" onerror="this.src='https://placehold.co/150x150/111/fff?text=User'" class="w-24 h-24 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-1 bg-zinc-900" />
-        <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-4 border-[var(--bg-primary)] rounded-full"></div>
+        <img src={profile.avatarUrl} alt="Profile Avatar" onerror="this.src='https://placehold.co/150x150/111/fff?text=User'" class="w-56 h-56 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-2.5 bg-zinc-900" />
+        <div class="absolute -bottom-1 -right-1 w-9 h-9 bg-emerald-500 border-4 border-[var(--bg-primary)] rounded-full"></div>
       </div>
 
       <!-- Bio Details -->
-      <div class="space-y-3 max-w-xl">
-        <span class="text-[10px] font-mono uppercase tracking-widest text-zinc-500 bg-zinc-900/60 px-2.5 py-1 rounded-md border border-[var(--border-color)]">
+      <div class="space-y-4 max-w-3xl">
+        <span class="inline-block mb-1.5 text-xs font-mono uppercase tracking-widest text-emerald-400 font-medium bg-emerald-950/20 px-3 py-1.5 rounded-md border border-emerald-900/30">
           {profile.title}
         </span>
-        <h1 class="text-3xl font-bold tracking-tight">{profile.name}</h1>
-        <p class="text-sm text-zinc-400 leading-relaxed">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">{profile.name}</h1>
+        <p class="text-base text-zinc-300 leading-relaxed">
           {profile.bio}
         </p>
       </div>
 
       <!-- Social Media List -->
-      <div class="flex items-center justify-center gap-5 mt-6 pt-6 border-t border-zinc-900/60 w-full max-w-md">
-        <a href={profile.socials.github} target="_blank" rel="noopener noreferrer" title="GitHub Infrastructure Code" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+      <div class="flex items-center justify-center gap-7 mt-6 pt-6 border-t border-zinc-900/60 w-full max-w-lg">
+        <a href={profile.socials.github} target="_blank" rel="noopener noreferrer" title="GitHub Infrastructure Code" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
           <i class="fa-brands fa-github"></i>
         </a>
-        <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn Engineering Profile" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+        <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn Engineering Profile" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
           <i class="fa-brands fa-linkedin"></i>
         </a>
-        <a href={`mailto:${profile.socials.email}`} title="Email Developer Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+        <a href={`mailto:${profile.socials.email}`} title="Email Developer Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
           <i class="fa-solid fa-envelope"></i>
         </a>
-        <a href={profile.cvUrl} download title="Download Resume (PDF)" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+        <a href={profile.cvUrl} download title="Download Resume (PDF)" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
           <i class="fa-solid fa-file-pdf"></i>
         </a>
-        <a href="#contact" title="Contact API Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-lg">
+        <a href="#contact" title="Contact API Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
           <i class="fa-solid fa-envelope-open-text"></i>
         </a>
       </div>
@@ -68,10 +68,12 @@ const featuredProjects = allProjects.filter(project =>
     <!-- Featured Project Previews -->
     <section class="space-y-6">
       <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3">
-        <h2 class="font-mono text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+        <h2 class="font-mono text-sm font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
           <span class="text-[var(--accent-primary)]">//</span> Core Projects Overview
         </h2>
-        <span class="text-[10px] text-zinc-500 font-mono">Standout Cases</span>
+        <span class="text-xs bg-zinc-900/60 px-2.5 py-0.5 rounded border border-[var(--border-color)] text-zinc-400 font-mono">
+          Standout Cases
+        </span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -93,9 +95,9 @@ const featuredProjects = allProjects.filter(project =>
 
       <!-- Deep Project Directory Target Link -->
       <div class="pt-4 text-center">
-        <a href="/projects" class="inline-flex items-center gap-2 font-mono text-xs text-[var(--accent-primary)] hover:text-emerald-300 transition group bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-zinc-700 px-5 py-3 rounded-xl cursor-pointer">
+        <a href="/projects" class="inline-flex items-center gap-2 font-mono text-sm text-[var(--accent-primary)] hover:text-emerald-300 transition group bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-zinc-700 px-6 py-3.5 rounded-xl cursor-pointer">
           <i class="fa-solid fa-folder-open"></i> VIEW COMPREHENSIVE PROJECT DIRECTORY
-          <span class="group-hover:translate-x-1 transition-transform">→</span>
+          <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1.5 transition-transform duration-300"></i>
         </a>
       </div>
     </section>
