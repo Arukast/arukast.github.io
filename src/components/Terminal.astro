@@ -5,9 +5,9 @@ import profile from '../data/profile.json';
   <!-- Terminal Header Bar -->
   <div class="bg-zinc-900/40 border-b border-[var(--border-color)] px-4 py-3 flex justify-between items-center">
     <div class="flex items-center gap-1.5">
-      <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
-      <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
-      <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
+      <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+      <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+      <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
       <span class="font-mono text-sm font-bold uppercase tracking-wider text-zinc-300 ml-2">sys_diagnose.sh</span>
     </div>
     <span class="font-mono text-xs bg-zinc-900/60 text-zinc-400 px-2.5 py-0.5 rounded border border-[var(--border-color)]">
@@ -66,8 +66,7 @@ import profile from '../data/profile.json';
   <!-- Terminal Command Input Line -->
   <form id="terminal-form" class="bg-zinc-950 px-5 py-3 border-t border-[var(--border-color)] flex items-center gap-2">
     <span class="font-mono text-[15px] text-[var(--accent-primary)] font-bold">~$</span>
-    <input type="text" id="terminal-input" autocomplete="off" class="flex-grow bg-transparent text-zinc-100 font-mono text-[15px] outline-none border-none placeholder-zinc-700" placeholder="Type core diagnostics commands..." />
-    <span class="terminal-cursor bg-[var(--accent-primary)] animate-blink"></span>
+    <input type="text" id="terminal-input" autocomplete="off" class="flex-grow bg-transparent text-zinc-100 font-mono text-[15px] outline-none border-none placeholder-zinc-700 caret-[var(--accent-primary)]" placeholder="Type core diagnostics commands..." />
   </form>
 </section>
 
