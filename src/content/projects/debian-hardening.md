@@ -7,6 +7,7 @@ tags: ["Debian 12", "Ansible", "Shell Scripting", "Fail2Ban"]
 githubUrl: "https://github.com"
 architecture: ["Base Debian VPS", "Ansible Playbook", "UFW Firewall", "fail2ban Daemon"]
 icon: "fa-server"
+image: "/images/projects/debian_hardening.png"
 ---
 
 ### Project Overview

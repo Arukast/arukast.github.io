@@ -36,7 +36,9 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     <section class="space-y-4">
       <!-- Back button and Navigation Context -->
       <div class="flex justify-between items-center text-sm font-mono text-zinc-400">
-        <span>/projects_inventory/{entry.id}.md</span>
+        <span>
+          <a href="/" class="hover:text-[var(--accent-primary)] transition-colors">/home</a>/<a href="/projects" class="hover:text-[var(--accent-primary)] transition-colors">projects_inventory</a>/{entry.id}.md
+        </span>
         <a href="/projects" class="text-zinc-400 hover:text-[var(--accent-primary)] transition flex items-center gap-1.5 bg-zinc-900 border border-[var(--border-color)] px-2.5 py-1 rounded-lg">
           <i class="fa-solid fa-arrow-left"></i> back_to_directory
         </a>
@@ -63,6 +65,17 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
       </div>
     </section>
 
+    <!-- Project Hero Image Banner if available -->
+    {entry.data.image && (
+      <section class="w-full overflow-hidden rounded-2xl border border-[var(--border-color)] bg-zinc-950/40">
+        <img 
+          src={entry.data.image} 
+          alt={`${entry.data.title} - Showcase`} 
+          class="w-full h-64 md:h-[400px] object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+        />
+      </section>
+    )}
+
     <!-- Project Architecture flow diagram if available -->
     {entry.data.architecture && entry.data.architecture.length > 0 && (
       <section class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-[11px] text-zinc-400 space-y-2">
@@ -85,17 +98,166 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
       <Content />
     </article>
 
-    <!-- Source Link Footer -->
-    <div class="pt-6 border-t border-[var(--border-color)] flex justify-between items-center text-sm font-mono">
-      <span class="text-zinc-400">Sources available under public GPL v3.</span>
-      <a href={entry.data.githubUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
-        <i class="fa-brands fa-github"></i> view_sources.git
-      </a>
-    </div>
+    <!-- Project Gallery Showcase if available -->
+    {entry.data.gallery && entry.data.gallery.length > 0 && (
+      <section class="space-y-4 pt-6 border-t border-[var(--border-color)]">
+        <h3 class="text-sm font-mono uppercase tracking-widest text-zinc-400">// Project Screenshots & Gallery</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {entry.data.gallery.map((img, idx) => {
+            const isHidden = idx >= 6;
+            const isLastVisible = idx === 5 && entry.data.gallery.length > 6;
+            return (
+              <div class={`group relative overflow-hidden rounded-xl border border-[var(--border-color)] bg-zinc-950/40 cursor-zoom-in aspect-video ${isHidden ? 'hidden' : ''}`}>
+                <img 
+                  src={img} 
+                  alt={`${entry.data.title} screenshot ${idx + 1}`} 
+                  class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-102 transition-all duration-300 gallery-image"
+                  data-src={img}
+                />
+                {isLastVisible && (
+                  <div class="absolute inset-0 bg-black/75 flex flex-col items-center justify-center pointer-events-none transition-colors group-hover:bg-black/60">
+                    <span class="text-white font-mono text-2xl font-bold">
+                      +{entry.data.gallery.length - 5}
+                    </span>
+                    <span class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest mt-1">More Screenshots</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Source / Website Link Footer -->
+    {(entry.data.githubUrl || entry.data.liveUrl) && (
+      <div class="pt-6 border-t border-[var(--border-color)] flex flex-wrap justify-between items-center gap-4 text-sm font-mono">
+        <span class="text-zinc-400">
+          {entry.data.githubUrl ? "Sources available under public GPL v3." : "Deployment online."}
+        </span>
+        <div class="flex items-center gap-4">
+          {entry.data.liveUrl && (
+            <a href={entry.data.liveUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
+              <i class="fa-solid fa-globe text-xs"></i> live_demo.html
+            </a>
+          )}
+          {entry.data.githubUrl && (
+            <a href={entry.data.githubUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
+              <i class="fa-brands fa-github"></i> view_sources.git
+            </a>
+          )}
+        </div>
+      </div>
+    )}
   </main>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-all duration-300">
+    <button id="lightbox-close" class="absolute top-6 right-6 text-zinc-400 hover:text-white text-3xl transition" aria-label="Close Lightbox">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    
+    <!-- Prev button -->
+    <button id="lightbox-prev" class="absolute left-6 text-zinc-400 hover:text-white text-4xl transition p-2" aria-label="Previous image">
+      <i class="fa-solid fa-angle-left"></i>
+    </button>
+
+    <div class="max-w-[85vw] max-h-[80vh] flex flex-col items-center gap-3">
+      <img id="lightbox-img" src="" alt="Lightbox image" class="max-w-full max-h-[80vh] rounded-lg border border-zinc-800 object-contain shadow-2xl" />
+      <span id="lightbox-counter" class="text-xs font-mono text-zinc-500"></span>
+    </div>
+
+    <!-- Next button -->
+    <button id="lightbox-next" class="absolute right-6 text-zinc-400 hover:text-white text-4xl transition p-2" aria-label="Next image">
+      <i class="fa-solid fa-angle-right"></i>
+    </button>
+  </div>
 
   <Footer />
 </Layout>
+
+<script>
+  function initLightbox() {
+    const galleryImages = document.querySelectorAll('.gallery-image') as NodeListOf<HTMLImageElement>;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+
+    let currentIndex = 0;
+
+    if (lightbox && lightboxImg && lightboxClose && lightboxPrev && lightboxNext && lightboxCounter && galleryImages.length > 0) {
+      const updateLightbox = (index: number) => {
+        currentIndex = index;
+        const img = galleryImages[currentIndex];
+        if (img) {
+          lightboxImg.src = img.getAttribute('data-src') || img.src;
+          lightboxCounter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+        }
+      };
+
+      galleryImages.forEach((img, idx) => {
+        const parent = img.parentElement;
+        if (parent) {
+          parent.addEventListener('click', () => {
+            updateLightbox(idx);
+            lightbox.classList.remove('opacity-0', 'pointer-events-none');
+          });
+        }
+      });
+
+      const showPrev = () => {
+        const nextIdx = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateLightbox(nextIdx);
+      };
+
+      const showNext = () => {
+        const nextIdx = (currentIndex + 1) % galleryImages.length;
+        updateLightbox(nextIdx);
+      };
+
+      const closeLightbox = () => {
+        lightbox.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          lightboxImg.src = '';
+        }, 300);
+      };
+
+      lightboxPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+
+      lightboxNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('pointer-events-none')) return;
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        }
+      });
+    }
+  }
+
+  // Initialize on page load and astro page transition
+  document.addEventListener('astro:page-load', initLightbox);
+</script>
 
 <style is:global>
   /* Markdown Typography overrides */

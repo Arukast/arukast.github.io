@@ -6,10 +6,12 @@ interface Props {
   category: string;
   status: string;
   tags: string[];
-  githubUrl: string;
+  githubUrl?: string;
+  liveUrl?: string;
   architecture?: string[];
   expanded?: boolean;
   icon?: string;
+  image?: string;
 }
 
 const {
@@ -20,9 +22,11 @@ const {
   status,
   tags,
   githubUrl,
+  liveUrl,
   architecture = [],
   expanded = false,
-  icon = "fa-cube"
+  icon = "fa-cube",
+  image
 } = Astro.props;
 
 const statusColorMap: Record<string, string> = {
@@ -37,51 +41,78 @@ const statusColor = statusColorMap[status.toUpperCase()] || 'bg-zinc-900 text-zi
 
 {expanded ? (
   // Expanded project card layout for /projects catalog list
-  <div class="p-6 bg-[var(--bg-secondary)]/40 border border-[var(--border-color)] rounded-2xl space-y-4">
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <span class="text-xl text-[var(--accent-primary)]"><i class={`fa-solid ${icon}`}></i></span>
-        <h3 class="text-lg font-bold font-mono text-white">{title}</h3>
-      </div>
-      <span class={`text-xs font-mono border px-2.5 py-0.5 rounded-md ${statusColor}`}>
-        STATUS: {status.toUpperCase()}
-      </span>
-    </div>
+  <div class="p-6 bg-[var(--bg-secondary)]/40 border border-[var(--border-color)] rounded-2xl">
+    <div class={image ? "grid grid-cols-1 md:grid-cols-12 gap-6 items-center" : "space-y-4"}>
+      <div class={image ? "md:col-span-8 space-y-4" : "space-y-4"}>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl text-[var(--accent-primary)]"><i class={`fa-solid ${icon}`}></i></span>
+            <h3 class="text-lg font-bold font-mono text-white">
+              <a href={`/projects/${slug}`} class="hover:text-[var(--accent-primary)] transition-colors">
+                {title}
+              </a>
+            </h3>
+          </div>
+          <span class={`text-xs font-mono border px-2.5 py-0.5 rounded-md ${statusColor}`}>
+            STATUS: {status.toUpperCase()}
+          </span>
+        </div>
 
-    <p class="text-sm text-zinc-300 leading-relaxed">
-      {description}
-    </p>
+        <p class="text-sm text-zinc-300 leading-relaxed">
+          {description}
+        </p>
 
-    {architecture && architecture.length > 0 && (
-      <div class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-xs text-zinc-400 space-y-2">
-        <p class="text-zinc-500">// System Architecture</p>
-        <div class="flex flex-wrap items-center gap-2 text-sm">
-          {architecture.map((node, index) => (
-            <>
-              {index > 0 && <span class="text-zinc-600">→</span>}
-              <span class={`bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded text-zinc-300 ${index === 1 ? 'font-semibold text-[var(--accent-primary)]' : ''}`}>
-                {node}
-              </span>
-            </>
-          ))}
+        {architecture && architecture.length > 0 && (
+          <div class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-xs text-zinc-400 space-y-2">
+            <p class="text-zinc-500">// System Architecture</p>
+            <div class="flex flex-wrap items-center gap-2 text-sm">
+              {architecture.map((node, index) => (
+                <>
+                  {index > 0 && <span class="text-zinc-600">→</span>}
+                  <span class={`bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded text-zinc-300 ${index === 1 ? 'font-semibold text-[var(--accent-primary)]' : ''}`}>
+                    {node}
+                  </span>
+                </>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
+          <div class="flex gap-2 text-xs font-mono text-zinc-500">
+            {tags.map(tag => (
+              <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">{tag}</span>
+            ))}
+          </div>
+          <div class="flex items-center gap-4">
+            <a href={`/projects/${slug}`} class="text-sm font-mono text-zinc-400 hover:text-white hover:underline flex items-center gap-1">
+              view_case_study <i class="fa-solid fa-file-lines text-xs"></i>
+            </a>
+            {liveUrl && (
+              <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="text-sm font-mono text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
+                <i class="fa-solid fa-globe text-xs"></i> live_demo.html
+              </a>
+            )}
+            {githubUrl && (
+              <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="text-sm font-mono text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
+                <i class="fa-brands fa-github"></i> view_sources.git
+              </a>
+            )}
+          </div>
         </div>
       </div>
-    )}
 
-    <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
-      <div class="flex gap-2 text-xs font-mono text-zinc-500">
-        {tags.map(tag => (
-          <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">{tag}</span>
-        ))}
-      </div>
-      <div class="flex items-center gap-4">
-        <a href={`/projects/${slug}`} class="text-sm font-mono text-zinc-400 hover:text-white hover:underline flex items-center gap-1">
-          view_case_study <i class="fa-solid fa-file-lines text-xs"></i>
-        </a>
-        <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="text-sm font-mono text-[var(--accent-primary)] hover:underline flex items-center gap-1.5">
-          <i class="fa-brands fa-github"></i> view_sources.git
-        </a>
-      </div>
+      {image && (
+        <div class="md:col-span-4 w-full h-full flex items-center">
+          <a href={`/projects/${slug}`} class="block w-full overflow-hidden rounded-xl border border-[var(--border-color)] hover:border-zinc-700/80 transition duration-300 group/img bg-zinc-950">
+            <img 
+              src={image} 
+              alt={title} 
+              class="w-full aspect-[16/10] object-cover opacity-85 group-hover/img:opacity-100 group-hover/img:scale-102 transition-all duration-500" 
+            />
+          </a>
+        </div>
+      )}
     </div>
   </div>
 ) : (
@@ -94,8 +125,10 @@ const statusColor = statusColorMap[status.toUpperCase()] || 'bg-zinc-900 text-zi
         </span>
         <span class="text-sm text-zinc-400 font-mono font-medium">{status}</span>
       </div>
-      <h3 class="text-lg font-bold group-hover:text-[var(--accent-primary)] transition-colors mb-2">
-        {title}
+      <h3 class="text-lg font-bold transition-colors mb-2">
+        <a href={`/projects/${slug}`} class="group-hover:text-[var(--accent-primary)] transition-colors">
+          {title}
+        </a>
       </h3>
       <p class="text-[15px] text-zinc-300 leading-relaxed mb-4 line-clamp-3">
         {description}

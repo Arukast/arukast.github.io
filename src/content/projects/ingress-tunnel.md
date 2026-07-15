@@ -7,6 +7,7 @@ tags: ["Docker", "Cloudflare", "Caddy Proxy", "Proxmox"]
 githubUrl: "https://github.com"
 architecture: ["Public Ingress", "Cloudflare Edge", "Docker Agent", "Proxmox PVE"]
 icon: "fa-shield-halved"
+image: "/images/projects/ingress_tunnel.png"
 ---
 
 ### Project Overview

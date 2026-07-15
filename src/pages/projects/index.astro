@@ -17,7 +17,9 @@ const projects = await getCollection('projects');
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border-color)] pb-4">
         <div>
           <span class="text-xs font-mono uppercase tracking-widest text-zinc-400">Root Directory</span>
-          <h1 class="text-2xl font-bold font-mono tracking-tight text-white mt-1">/projects_inventory</h1>
+          <h1 class="text-2xl font-bold font-mono tracking-tight text-white mt-1">
+            <a href="/" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-colors">/home</a>/projects_inventory
+          </h1>
         </div>
         <a href="/" class="text-xs font-mono text-zinc-400 hover:text-[var(--accent-primary)] transition flex items-center gap-1.5 bg-zinc-900 border border-[var(--border-color)] px-3 py-1.5 rounded-lg">
           <i class="fa-solid fa-arrow-left"></i> back_to_home
@@ -39,9 +41,11 @@ const projects = await getCollection('projects');
           status={project.data.status}
           tags={project.data.tags}
           githubUrl={project.data.githubUrl}
+          liveUrl={project.data.liveUrl}
           architecture={project.data.architecture}
           expanded={true}
           icon={project.data.icon}
+          image={project.data.image}
         />
       ))}
     </section>

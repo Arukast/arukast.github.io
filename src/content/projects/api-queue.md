@@ -7,6 +7,11 @@ tags: ["Golang", "Redis Clusters", "Docker", "Prometheus"]
 githubUrl: "https://github.com"
 architecture: ["Client Payload", "Go REST API", "Redis Buffer", "Worker Swarm"]
 icon: "fa-cube"
+image: "/images/projects/api_queue.png"
+gallery:
+  - "/images/projects/api_queue.png"
+  - "/images/projects/debian_hardening.png"
+  - "/images/projects/ingress_tunnel.png"
 ---
 
 ### Project Overview
