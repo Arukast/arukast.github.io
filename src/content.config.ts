@@ -14,8 +14,8 @@ const projects = defineCollection({
     liveUrl: z.preprocess((val) => val === '' ? undefined : val, z.string().url().optional()),
     architecture: z.array(z.string()).optional(),
     icon: z.string().optional(),
-    image: z.string().optional(),
-    gallery: z.array(z.string()).optional(),
+    image: z.preprocess((val) => val === '' || val === null ? undefined : val, z.string().optional()),
+    gallery: z.preprocess((val) => val === '' || val === null || (Array.isArray(val) && val.length === 0) ? undefined : val, z.array(z.string()).optional()),
     featured: z.preprocess((val) => val === null || val === '' ? undefined : val, z.boolean().optional()),
     order: z.preprocess((val) => val === null || val === '' ? undefined : val, z.number().optional())
   })

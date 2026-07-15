@@ -17,9 +17,8 @@ featured:  # Boolean: set to true to feature this project on the homepage
 
 
 # Media Showcase, Recommended Limit between 6 to 12 images per project (Optional, omit if not applicable)
-image: ""
+image: 
 gallery:
-  - ""
 ---
 
 ### Project Overview

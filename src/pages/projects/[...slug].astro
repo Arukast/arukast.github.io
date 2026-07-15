@@ -78,13 +78,15 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
 
     <!-- Project Architecture flow diagram if available -->
     {entry.data.architecture && entry.data.architecture.length > 0 && (
-      <section class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-[11px] text-zinc-400 space-y-2">
-        <p class="text-zinc-400">// Infrastructure Path Flow</p>
-        <div class="flex flex-wrap items-center gap-2 text-[13px]">
+      <section class="bg-zinc-950 p-5 rounded-xl border border-[var(--border-color)] font-mono text-[11px] text-zinc-400 space-y-3">
+        <p class="text-zinc-500">// Infrastructure Path Flow</p>
+        <div class="flex flex-wrap items-center gap-y-3 gap-x-2.5 text-xs">
           {entry.data.architecture.map((node, index) => (
             <>
-              {index > 0 && <span class="text-zinc-600">→</span>}
-              <span class={`bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded text-zinc-300 ${index === 1 ? 'font-semibold text-[var(--accent-primary)]' : ''}`}>
+              {index > 0 && (
+                <i class="fa-solid fa-arrow-right text-xs text-[var(--accent-primary)] opacity-80 shrink-0 px-0.5"></i>
+              )}
+              <span class="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-200 font-medium">
                 {node}
               </span>
             </>
@@ -272,7 +274,9 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     text-transform: uppercase;
     font-family: 'JetBrains Mono', monospace;
   }
-  .project-content p {
+  .project-content p,
+  .project-content ul,
+  .project-content ol {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     line-height: 1.6;
@@ -282,13 +286,18 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
   .project-content ul {
     list-style-type: square;
     padding-left: 20px;
-    margin-bottom: 14px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: #a1a1aa;
+  }
+  .project-content ol {
+    list-style-type: decimal;
+    padding-left: 20px;
   }
   .project-content li {
     margin-bottom: 6px;
+  }
+  .project-content li::marker {
+    color: var(--accent-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
   }
   .project-content strong {
     color: #f4f4f5;
