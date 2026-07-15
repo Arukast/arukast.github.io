@@ -72,9 +72,20 @@ const isHome = pathname === '/' || pathname === '';
     padding: 0.5rem 1.25rem;
   }
 
-  /* Hide the domain name on scroll to keep the island compact and clean */
+  .logo-domain {
+    display: inline-block;
+    max-width: 150px;
+    opacity: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    vertical-align: bottom;
+  }
+
+  /* Collapse the domain name on scroll to keep the island compact and clean */
   #navbar-container.is-scrolled .logo-domain {
-    display: none;
+    max-width: 0px;
+    opacity: 0;
   }
 
   @media (max-width: 640px) {
