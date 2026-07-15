@@ -2,39 +2,195 @@
 import profile from '../data/profile.json';
 
 const pathname = Astro.url.pathname;
-
 const isHome = pathname === '/' || pathname === '';
-const isProjects = pathname.startsWith('/projects');
 ---
 
-<header class="sticky top-0 z-40 bg-[var(--bg-primary)]/80 backdrop-blur-md border-b border-[var(--border-color)] px-6 py-4 transition-all duration-300">
-  <div class="max-w-3xl mx-auto flex justify-between items-center gap-4">
-    <div class="flex items-center gap-3">
-      <a href="/" class="font-mono text-sm tracking-tight hover:opacity-80 flex items-center gap-2">
+<header id="main-header" class="sticky top-0 z-40 w-full pointer-events-none">
+  <div id="navbar-container" class="mx-auto flex justify-between items-center gap-4 pointer-events-auto">
+    <div class="flex items-center gap-2">
+      <a href="/" class="font-mono text-[13px] sm:text-sm tracking-tight hover:opacity-80 flex items-center gap-1">
         <span class="text-[var(--accent-primary)]"><i class="fa-solid fa-terminal"></i></span>
-        <span class="font-bold">{profile.username}@{profile.domain}</span><span class="text-zinc-600">:~#</span>
+        <span class="font-bold">{profile.username}</span><span class="font-bold logo-domain">@{profile.domain}</span><span class="text-zinc-600 logo-text-desktop">:~#</span>
       </a>
     </div>
 
-    <div class="flex items-center gap-4">
-      <!-- Navigation Tabs -->
-      <nav class="flex gap-4 text-xs font-mono">
-        <a href="/" class={`hover:text-[var(--accent-primary)] transition-colors py-1 ${isHome ? 'text-[var(--accent-primary)] font-semibold' : 'text-zinc-400'}`}>
-          /home
-        </a>
-        <a href="/projects" class={`hover:text-[var(--accent-primary)] transition-colors py-1 ${isProjects ? 'text-[var(--accent-primary)] font-semibold' : 'text-zinc-400'}`}>
-          /projects
-        </a>
-      </nav>
-
-      <!-- Live Nodes Counter -->
-      <div class="flex items-center gap-2 px-2.5 py-1 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg font-mono text-[10px] hidden sm:flex">
-        <span class="relative flex h-1.5 w-1.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-        </span>
-        <span class="text-zinc-400 uppercase tracking-wider text-[9px] font-medium">Node: Active</span>
-      </div>
-    </div>
+    <!-- Navigation Tabs -->
+    <nav class="flex gap-3 sm:gap-5 text-[13px] sm:text-sm font-mono">
+      <a href={isHome ? "#" : "/"} class="nav-link text-zinc-400 py-1" data-nav="home">
+        /home
+      </a>
+      <a href={isHome ? "#profile" : "/#profile"} class="nav-link text-zinc-400 py-1" data-nav="profile">
+        ~#profile
+      </a>
+      <a href={isHome ? "#terminal-root" : "/#terminal-root"} class="nav-link text-zinc-400 py-1" data-nav="terminal">
+        ~#terminal
+      </a>
+      <a href={isHome ? "#core-projects" : "/#core-projects"} class="nav-link text-zinc-400 py-1" data-nav="projects">
+        ~#projects
+      </a>
+      <a href={isHome ? "#contact" : "/#contact"} class="nav-link text-zinc-400 py-1" data-nav="contact">
+        ~#contact
+      </a>
+    </nav>
   </div>
 </header>
+
+<style>
+  /* Outer sticky header background & border on top of page */
+  header {
+    background-color: rgba(9, 9, 11, 0.9);
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    transition: background-color 0.5s ease, border-color 0.5s ease, backdrop-filter 0.5s ease;
+  }
+  
+  header.is-scrolled {
+    background-color: transparent;
+    border-color: transparent;
+    backdrop-filter: none;
+  }
+
+  /* Default Inner Header Container aligned with grid */
+  #navbar-container {
+    width: 100%;
+    max-width: 48rem; /* max-w-3xl */
+    padding: 1rem 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 0;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Floating Island HUD State (Active when scrolled) */
+  #navbar-container.is-scrolled {
+    margin-top: 0.75rem;
+    max-width: 620px;
+    border-radius: 9999px;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    background-color: rgba(9, 9, 11, 0.85);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.05), 0 10px 30px rgba(0, 0, 0, 0.6);
+    padding: 0.5rem 1.25rem;
+  }
+
+  /* Hide the domain name on scroll to keep the island compact and clean */
+  #navbar-container.is-scrolled .logo-domain {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    #navbar-container {
+      padding: 1rem;
+    }
+    
+    #navbar-container.is-scrolled {
+      max-width: calc(100% - 2rem);
+      padding: 0.5rem 1rem;
+    }
+    
+    /* Hide prompt symbol on mobile scrolled island to save space */
+    #navbar-container.is-scrolled .logo-text-desktop {
+      display: none;
+    }
+  }
+
+  /* Active glow effect */
+  :global(.active-glow) {
+    color: var(--accent-primary) !important;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    font-weight: 600;
+  }
+  
+  .nav-link {
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: var(--accent-primary);
+    text-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+  }
+</style>
+
+<script>
+  function setupNavbar() {
+    const header = document.getElementById('main-header');
+    const container = document.getElementById('navbar-container');
+    const links = document.querySelectorAll('.nav-link');
+    
+    function onScroll() {
+      // Toggle scrolled container state
+      if (window.scrollY > 20) {
+        header?.classList.add('is-scrolled');
+        container?.classList.add('is-scrolled');
+      } else {
+        header?.classList.remove('is-scrolled');
+        container?.classList.remove('is-scrolled');
+      }
+      
+      // Scroll Spy Logic
+      const sections = [
+        { id: 'profile', nav: 'profile' },
+        { id: 'terminal-root', nav: 'terminal' },
+        { id: 'core-projects', nav: 'projects' },
+        { id: 'contact', nav: 'contact' }
+      ];
+      
+      const isCurrentHome = window.location.pathname === '/' || window.location.pathname === '';
+      let activeNav = isCurrentHome ? 'home' : '';
+      const scrollPosition = window.scrollY + 180; // offset threshold
+      
+      if (isCurrentHome) {
+        if (window.scrollY < 80) {
+          activeNav = 'home';
+        } else {
+          sections.forEach(section => {
+            const el = document.getElementById(section.id);
+            if (el && scrollPosition >= el.offsetTop) {
+              activeNav = section.nav;
+            }
+          });
+        }
+      }
+      
+      links.forEach(link => {
+        const nav = link.getAttribute('data-nav');
+        if (nav === activeNav) {
+          link.classList.add('active-glow');
+          link.classList.remove('text-zinc-400');
+        } else {
+          link.classList.remove('active-glow');
+          link.classList.add('text-zinc-400');
+        }
+      });
+    }
+
+    // Add smooth scroll behavior for same-page clicks
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        const isHome = window.location.pathname === '/' || window.location.pathname === '';
+        
+        if (isHome && href && href.includes('#')) {
+          const hashIndex = href.indexOf('#');
+          const hash = href.substring(hashIndex);
+          
+          e.preventDefault();
+          if (hash === '#') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            const targetEl = document.querySelector(hash);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }
+      });
+    });
+
+    window.addEventListener('scroll', onScroll);
+    // Initial call to set active states
+    onScroll();
+  }
+
+  // Handle Astro page transition load
+  document.addEventListener('astro:page-load', setupNavbar);
+</script>

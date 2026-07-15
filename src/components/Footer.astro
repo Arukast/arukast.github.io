@@ -1,52 +1,76 @@
 ---
+// @ts-ignore
+import { execSync } from 'child_process';
+import profile from '../data/profile.json';
+
+let lastUpdated = '';
+try {
+  lastUpdated = execSync('git log -1 --format=%cI').toString().trim();
+} catch (e) {
+  // Fallback to current time if git is not initialized or available
+  lastUpdated = new Date().toISOString();
+}
 ---
-<footer class="mt-12 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]/10 py-8 px-6 transition-colors duration-300">
-  <div class="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-zinc-500">
-    <div class="text-center sm:text-left space-y-1">
-      <p>© 2026 Systems Portfolio Engine. Powered by static components.</p>
-      <p class="text-[10px] text-zinc-600">Runtime compile: 0.0012s. Uptime verified active.</p>
+<footer class="mt-8 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]/10 py-5 px-6 transition-colors duration-300">
+  <div class="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm font-mono text-zinc-400">
+    <div class="text-center sm:text-left">
+      <p class="text-zinc-300">© 2026 {profile.name}. All rights reserved.</p>
     </div>
 
     <div class="flex flex-col items-center sm:items-end gap-2 text-right">
-      <div class="text-[10px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-2 py-1 rounded">
+      <div class="text-xs text-zinc-300 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded">
         <i class="fa-regular fa-clock text-[var(--accent-primary)] mr-1"></i>
-        <span id="uptime-counter">UP: 00d:00h:00m:00s</span>
+        <span id="last-update" data-timestamp={lastUpdated}>LAST UPDATE: checking...</span>
       </div>
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--accent-primary)] transition-colors flex items-center gap-1.5 underline underline-offset-4 decoration-zinc-800 text-[10px]">
-        <i class="fa-brands fa-github"></i> deployment_pipeline.yml
+      <a href="https://github.com/Arukast/arukast.github.io" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--accent-primary)] hover:text-shadow-[0_0_8px_rgba(16,185,129,0.3)] transition-all flex items-center gap-1.5 underline underline-offset-4 decoration-zinc-800 text-xs text-zinc-400">
+        <i class="fa-brands fa-github"></i> arukast.github.io.git
       </a>
     </div>
   </div>
 </footer>
 
 <script>
-  let systemStartSeconds = Math.floor(Math.random() * 400000) + 600000;
-  let uptimeInterval: number | undefined = undefined;
+  function updateTimeAgo() {
+    const el = document.getElementById('last-update');
+    if (!el) return;
 
-  function startUptimeCounter() {
-    const counterEl = document.getElementById('uptime-counter');
-    if (!counterEl) return;
+    const timestamp = el.getAttribute('data-timestamp');
+    if (!timestamp) return;
 
-    if (uptimeInterval !== undefined) {
-      clearInterval(uptimeInterval);
+    const date = new Date(timestamp);
+    const now = new Date();
+    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) {
+      el.textContent = `LAST UPDATE: ${interval} year${interval > 1 ? 's' : ''} ago`;
+      return;
     }
-
-    uptimeInterval = setInterval(() => {
-      systemStartSeconds++;
-      const days = Math.floor(systemStartSeconds / (24 * 3600));
-      const hrs = Math.floor((systemStartSeconds % (24 * 3600)) / 3600);
-      const mins = Math.floor((systemStartSeconds % 3600) / 60);
-      const secs = systemStartSeconds % 60;
-      
-      const el = document.getElementById('uptime-counter');
-      if (el) {
-        el.textContent = `UP: ${String(days).padStart(2, '0')}d:${String(hrs).padStart(2, '0')}h:${String(mins).padStart(2, '0')}m:${String(secs).padStart(2, '0')}s`;
-      }
-    }, 1000) as unknown as number;
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+      el.textContent = `LAST UPDATE: ${interval} month${interval > 1 ? 's' : ''} ago`;
+      return;
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) {
+      el.textContent = `LAST UPDATE: ${interval} day${interval > 1 ? 's' : ''} ago`;
+      return;
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) {
+      el.textContent = `LAST UPDATE: ${interval} hour${interval > 1 ? 's' : ''} ago`;
+      return;
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) {
+      el.textContent = `LAST UPDATE: ${interval} minute${interval > 1 ? 's' : ''} ago`;
+      return;
+    }
+    el.textContent = `LAST UPDATE: just now`;
   }
 
-  // Setup interval on astro load
+  // Update calculation immediately on page load
   document.addEventListener('astro:page-load', () => {
-    startUptimeCounter();
+    updateTimeAgo();
   });
 </script>
