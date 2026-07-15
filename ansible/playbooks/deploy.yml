@@ -1,0 +1,107 @@
+---
+- name: Deploy Containerized Reverse Proxy and Static Site
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install dependencies for Docker setup
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - lsb-release
+        state: present
+        update_cache: yes
+
+    - name: Create Docker keyring directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Check if Docker GPG key exists
+      stat:
+        path: /etc/apt/keyrings/docker.gpg
+      register: docker_gpg_key
+
+    - name: Add Docker GPG key
+      shell: |
+        curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      when: not docker_gpg_key.stat.exists
+
+    - name: Configure Docker apt repository
+      copy:
+        content: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+        dest: /etc/apt/sources.list.d/docker.list
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Install Docker and Docker Compose
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker service is running and enabled
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create application directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0755'
+      loop:
+        - "{{ app_dir }}"
+        - "{{ app_dir }}/caddy"
+        - /var/www/portfolio
+
+    - name: Transfer built static site files to target directory
+      copy:
+        src: "{{ playbook_dir }}/../../dist/"
+        dest: /var/www/portfolio/
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+        directory_mode: '0755'
+
+    - name: Deploy Caddyfile configuration
+      template:
+        src: "{{ playbook_dir }}/../templates/Caddyfile.j2"
+        dest: "{{ app_dir }}/caddy/Caddyfile"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      register: caddyfile_status
+
+    - name: Deploy docker-compose.yml configuration
+      template:
+        src: "{{ playbook_dir }}/../templates/docker-compose.yml.j2"
+        dest: "{{ app_dir }}/docker-compose.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
+      register: compose_status
+
+    - name: Run docker-compose stack
+      command:
+        cmd: docker compose up -d --remove-orphans
+        chdir: "{{ app_dir }}"
+      when: caddyfile_status.changed or compose_status.changed
+
+    - name: Reload Caddy service (if Caddyfile changed but Compose configuration did not)
+      command:
+        cmd: docker compose exec -w /etc/caddy caddy caddy reload
+        chdir: "{{ app_dir }}"
+      when: caddyfile_status.changed and not compose_status.changed

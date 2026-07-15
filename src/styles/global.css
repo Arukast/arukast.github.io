@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+@source "../**/*.{astro,html,js,jsx,md,mdx,ts,tsx}";
+
 
 @theme {
   --font-sans: "Inter", sans-serif;

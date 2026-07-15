@@ -1,0 +1,9 @@
+[webservers]
+# Replace with your VPS IP address, deployment username, and SSH port
+vps_node ansible_host=192.168.1.100 ansible_user=deployer ansible_port=22 ansible_ssh_private_key_file=~/.ssh/id_ed25519
+
+[all:vars]
+# Domain name for Caddy TLS and reverse proxy
+domain_name=yourname.dev
+# Deployment directory on the target VPS
+app_dir=/opt/portfolio

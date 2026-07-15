@@ -1,0 +1,124 @@
+---
+- name: VPS Hardening and Security Configuration
+  hosts: all
+  become: yes
+  vars:
+    # Safe fallback default. Can be overridden in inventory/vars
+    ssh_port: "{{ ansible_port | default(22) }}"
+
+  tasks:
+    - name: Update apt repository cache and upgrade all packages
+      apt:
+        update_cache: yes
+        upgrade: safe
+        autoremove: yes
+        clean: yes
+
+    - name: Install security and utility package prerequisites
+      apt:
+        name:
+          - ufw
+          - fail2ban
+          - unattended-upgrades
+          - sudo
+          - curl
+          - git
+        state: present
+
+    - name: Configure SSH Daemon - disable root login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+        state: present
+      notify: Restart SSH
+
+    - name: Configure SSH Daemon - disable password authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+      notify: Restart SSH
+
+    - name: Configure SSH Daemon - enforce Pubkey authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PubkeyAuthentication'
+        line: 'PubkeyAuthentication yes'
+        state: present
+      notify: Restart SSH
+
+    - name: Configure UFW - set default deny incoming
+      ufw:
+        direction: incoming
+        policy: deny
+
+    - name: Configure UFW - set default allow outgoing
+      ufw:
+        direction: outgoing
+        policy: allow
+
+    - name: Configure UFW - allow SSH port
+      ufw:
+        rule: allow
+        port: "{{ ssh_port | string }}"
+        proto: tcp
+        comment: "Allow SSH"
+
+    - name: Configure UFW - allow HTTP port 80
+      ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
+        comment: "Allow HTTP for ACME challanges"
+
+    - name: Configure UFW - allow HTTPS port 443
+      ufw:
+        rule: allow
+        port: "443"
+        proto: tcp
+        comment: "Allow HTTPS reverse proxy"
+
+    - name: Enable UFW firewall
+      ufw:
+        state: enabled
+
+    - name: Deploy Fail2Ban jail.local configuration
+      copy:
+        content: |
+          [DEFAULT]
+          bantime = 1h
+          findtime = 10m
+          maxretry = 5
+
+          [sshd]
+          enabled = true
+          port = {{ ssh_port }}
+          logpath = %(sshd_log)s
+          backend = %(sshd_backend)s
+        dest: /etc/fail2ban/jail.local
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart Fail2Ban
+
+    - name: Ensure services are started and enabled
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - fail2ban
+        - unattended-upgrades
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: sshd
+        state: restarted
+
+    - name: Restart Fail2Ban
+      service:
+        name: fail2ban
+        state: restarted
