@@ -12,8 +12,8 @@ githubUrl: "https://github.com/Arukast/arukast.github.io/tree/main/homelab"
 liveUrl: ""
 
 # Ordering & Homepage Pinning (Optional)
-order: 1 # Integer: lower numbers are displayed first (e.g., 1 before 2)
-featured: true # Boolean: set to true to feature this project on the homepage
+order:  # Integer: lower numbers are displayed first (e.g., 1 before 2)
+featured: false # Boolean: set to true to feature this project on the homepage
 
 # Media Showcase, Recommended Limit between 6 to 12 images per project (Optional, omit if not applicable)
 image: ""
