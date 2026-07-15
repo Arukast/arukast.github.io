@@ -21,9 +21,66 @@ const featuredProjects = allProjects.filter(project =>
   <Navbar />
 
   <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-10 space-y-12">
+    <!-- Home / Hero Section -->
+    <section id="home" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-6rem)] py-6 lg:py-12 border-b border-[var(--border-color)]/40">
+      <!-- Left Column: Intro -->
+      <div class="lg:col-span-7 space-y-8">
+        <div class="space-y-4">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight leading-tight">
+            Hi all, I'm <span class="text-[var(--accent-primary)]">{profile.name.split(' (')[0]}</span> 👋
+          </h1>
+          <p class="text-base sm:text-lg md:text-xl text-zinc-300 leading-relaxed font-normal">
+            A passionate <span class="text-white font-medium">{profile.title}</span> having an experience of building self-hosted homelabs, virtualization infrastructure with Proxmox/Docker, and automated DevOps pipelines.
+          </p>
+        </div>
+ 
+        <!-- Social Media List -->
+        <div class="flex flex-wrap items-center gap-3.5 pt-2">
+          <a href={profile.socials.github} target="_blank" rel="noopener noreferrer" title="GitHub Infrastructure Code" class="flex items-center justify-center w-11 h-11 rounded-full bg-zinc-800 text-white hover:bg-zinc-700 hover:scale-110 transition duration-300 text-xl shadow-md">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn Engineering Profile" class="flex items-center justify-center w-11 h-11 rounded-full bg-[#0077b5] text-white hover:brightness-110 hover:scale-110 transition duration-300 text-xl shadow-md">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href={`mailto:${profile.socials.email}`} title="Email Developer Direct" class="flex items-center justify-center w-11 h-11 rounded-full bg-[#ea4335] text-white hover:brightness-110 hover:scale-110 transition duration-300 text-xl shadow-md">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+ 
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-wrap gap-5 pt-2">
+          <a href="#contact" class="inline-flex items-center justify-center font-sans text-xs font-bold tracking-widest uppercase bg-[var(--accent-primary)] hover:bg-emerald-400 text-black px-8 py-4 rounded-md transition duration-300 cursor-pointer shadow-lg shadow-emerald-500/10">
+            CONTACT ME
+          </a>
+          <a href={profile.cvUrl} download class="inline-flex items-center justify-center font-sans text-xs font-bold tracking-widest uppercase bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-[var(--border-color)] hover:border-zinc-700 px-8 py-4 rounded-md transition duration-300 cursor-pointer">
+            DOWNLOAD MY RESUME
+          </a>
+        </div>
+      </div>
+ 
+      <!-- Right Column: Visual ASCII -->
+      <div class="lg:col-span-5 flex justify-center items-center w-full">
+        <svg viewBox="0 0 440 125" class="w-full h-auto text-[var(--accent-primary)] drop-shadow-[0_0_15px_rgba(16,185,129,0.25)] select-none" xmlns="http://www.w3.org/2000/svg">
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="bold" font-size="12" xml:space="preserve" class="whitespace-pre fill-current">
+            <tspan x="50%" dy="-4em">____________________/\\\________/\\\_________________________</tspan>
+            <tspan x="50%" dy="1.15em"> ___________________\/\\\_______\/\\\_________________________</tspan>
+            <tspan x="50%" dy="1.15em">  ____/\\\\\_________\/\\\_______\/\\\__/\\\____/\\\\\_________</tspan>
+            <tspan x="50%" dy="1.15em">   __/\\\///\\\__/\\\_\/\\\\\\\\\\\\\\\_\///___/\\\///\\\__/\\\_</tspan>
+            <tspan x="50%" dy="1.15em">    _\///__\///\\\\\/__\/\\\/////////\\\__/\\\_\///__\///\\\\\/__</tspan>
+            <tspan x="50%" dy="1.15em">     _________\/////____\/\\\_______\/\\\_\/\\\_________\/////____</tspan>
+            <tspan x="50%" dy="1.15em">      ___________________\/\\\_______\/\\\_\/\\\___________________</tspan>
+            <tspan x="50%" dy="1.15em">       ___________________\/\\\_______\/\\\_\/\\\___________________</tspan>
+            <tspan x="50%" dy="1.15em">        ___________________\///________\///__\///____________________</tspan>
+          </text>
+        </svg>
+      </div>
+    </section>
+
     <!-- Profile Section -->
     <section id="profile" class="flex flex-col items-center text-center p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 relative overflow-hidden backdrop-blur-sm">
       <div class="absolute -right-12 -top-12 w-48 h-48 bg-[var(--accent-primary)]/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-6 select-none">// DETAILED_PROFILE_MANIFEST</div>
 
       <!-- Avatar with pulse indicator -->
       <div class="relative mb-6">
