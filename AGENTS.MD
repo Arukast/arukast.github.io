@@ -56,7 +56,7 @@ Draft a production-ready .github/workflows/deploy.yml pipeline that compiles the
 
 Write a sample Ansible playbook to deploy, secure, and run containerized reverse-proxy services (e.g., Caddy, Docker) on a cheap VPS.
 
-Phase 3: Homelab Secure Bridging
+Phase 3: Homelab Secure Bridging (Completed)
 
 Write a template configuration for deploying a Cloudflare Tunnel (cloudflared) inside a Proxmox VM or Docker environment.
 

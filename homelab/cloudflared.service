@@ -1,0 +1,23 @@
+[Unit]
+Description=Cloudflare Tunnel Agent (cloudflared)
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# We run cloudflared under a dedicated unprivileged user for security hardening
+User=cloudflared
+Group=cloudflared
+# Path to executable and the target configuration file
+ExecStart=/usr/local/bin/cloudflared --config /etc/cloudflared/config.yml --no-autoupdate tunnel run
+Restart=always
+RestartSec=5
+# Hardening systemd execution space
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

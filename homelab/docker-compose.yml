@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    # Run as non-root (nobody:nogroup) for security hardening
+    user: "65534:65534"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - ./config.yml:/etc/cloudflared/config.yml:ro
+      # Replace creds.json with your actual credential JSON file path from 'cloudflared tunnel create'
+      - ./creds.json:/etc/cloudflared/creds.json:ro
+    command: tunnel run
+    # Optional: connect to a shared network with your other containerized microservices
+    # networks:
+    #   - reverse-proxy-network
+
+# networks:
+#   reverse-proxy-network:
+#     external: true

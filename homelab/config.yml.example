@@ -1,0 +1,35 @@
+# Cloudflare Tunnel Configuration Template
+# For detailed reference, see: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/configure-tunnels/local-management/configuration-file/
+
+# The UUID of your tunnel. Create a tunnel first using 'cloudflared tunnel create <name>'
+tunnel: 00000000-0000-0000-0000-000000000000
+
+# Path to the credentials file generated when creating the tunnel
+credentials-file: /etc/cloudflared/creds.json
+
+# Optional settings for tunnel connections and routing
+warp-routing:
+  enabled: true
+
+# Ingress rules define how incoming requests to public subdomains map to local resources.
+# Cloudflare matches requests against hostnames in order. The last rule must be a catch-all.
+ingress:
+  # Example 1: Map subdomain to a web service running inside Docker on the same node
+  - hostname: demo.yourname.dev
+    service: http://192.168.1.50:8080
+
+  # Example 2: Map subdomain to a Proxmox VE dashboard running HTTPS with a self-signed certificate
+  - hostname: proxmox.yourname.dev
+    service: https://192.168.1.10:8006
+    originRequest:
+      noTLSVerify: true  # Instructs cloudflared to bypass TLS verification for self-signed SSL certs
+      disableChunkedEncoding: true
+
+  # Example 3: Map subdomain to an internal SSH server
+  # Clients must run 'cloudflared access ssh' locally to connect through this tunnel
+  - hostname: ssh.yourname.dev
+    service: ssh://192.168.1.15:22
+
+  # Catch-all rule: This matches all traffic that did not match previous rules.
+  # A catch-all rule is MANDATORY and must be the final rule in the list.
+  - service: http_status:404
