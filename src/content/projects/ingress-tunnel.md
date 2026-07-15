@@ -1,13 +1,24 @@
 ---
 title: "Portless Ingress Cloud Tunnel Node"
 description: "Security architecture built to connect internal homelab servers and Proxmox VMs to external subdomains securely. Traditionally, developers open ports (80/443) on dynamic residential routers. This setup deploys lightweight cloudflared agents in Docker containers that build persistent outbound TLS connections to the Edge, securing the raw home IP from malicious sweeps."
-status: "ONLINE"
-category: "Docker Routing"
+status: "ONLINE" # Options: PRODUCTION, ONLINE, BLUEPRINT, STABLE
+category: "Docker Routing" # e.g., "Docker Routing", "Go Router & Queue", "Web Application"
 tags: ["Docker", "Cloudflare", "Caddy Proxy", "Proxmox"]
+icon: "fa-shield-halved" # FontAwesome icon name (e.g., fa-cube, fa-server, fa-globe, fa-shield-halved)
+architecture: ["Public Ingress", "Cloudflare Edge", "Docker Agent", "Proxmox PVE"] # Optional: flows for the system path schematic
+
+# Links (Both are optional, omit if not applicable)
 githubUrl: "https://github.com/Arukast/arukast.github.io/tree/main/homelab"
-architecture: ["Public Ingress", "Cloudflare Edge", "Docker Agent", "Proxmox PVE"]
-icon: "fa-shield-halved"
+liveUrl: ""
+
+# Ordering & Homepage Pinning (Optional)
+order: 1 # Integer: lower numbers are displayed first (e.g., 1 before 2)
+featured: true # Boolean: set to true to feature this project on the homepage
+
+# Media Showcase, Recommended Limit between 6 to 12 images per project (Optional, omit if not applicable)
 image: ""
+gallery:
+  - ""
 ---
 
 ### Project Overview

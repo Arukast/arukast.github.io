@@ -9,10 +9,19 @@ import { getCollection } from 'astro:content';
 import profile from '../data/profile.json';
 
 const allProjects = await getCollection('projects');
-// We feature api-queue and ingress-tunnel on the home page as in the original index.html
-const featuredProjects = allProjects.filter(project => 
-  project.id === 'api-queue' || project.id === 'ingress-tunnel'
-);
+
+// Sort all projects by order (ascending)
+const sortedProjects = [...allProjects].sort((a, b) => {
+  const orderA = a.data.order ?? 999;
+  const orderB = b.data.order ?? 999;
+  return orderA - orderB;
+});
+
+// Filter featured projects by frontmatter flag (fallback to defaults if none marked)
+const hasFeaturedField = allProjects.some(project => project.data.featured === true);
+const featuredProjects = hasFeaturedField 
+  ? sortedProjects.filter(project => project.data.featured === true)
+  : sortedProjects.filter(project => project.id === 'api-queue' || project.id === 'ingress-tunnel');
 ---
 
 <Layout>
