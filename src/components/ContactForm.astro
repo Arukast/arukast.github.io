@@ -1,6 +1,7 @@
 ---
+const web3FormsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
 ---
-<section id="contact" class="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 backdrop-blur-sm flex flex-col gap-4">
+<section id="contact" data-web3forms-key={web3FormsKey} class="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 backdrop-blur-sm flex flex-col gap-4">
   <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-3">
     <h2 class="font-mono text-sm font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
       <span class="text-[var(--accent-primary)]"><i class="fa-regular fa-envelope"></i></span>
@@ -51,41 +52,155 @@
 
     if (!contactForm || !responsePanel || !responseCode || !nameInput || !emailInput || !messageInput) return;
 
-    contactForm.addEventListener('submit', function (e) {
+    contactForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+      
+      // Safety guard inside async context
+      if (!nameInput || !emailInput || !messageInput) return;
+
       const clientName = nameInput.value;
       const clientEmail = emailInput.value;
       const clientMessage = messageInput.value;
 
-      // Render simulated dynamic JSON response payloads
-      const mockJSON = {
-        "status": 202,
-        "status_text": "Accepted",
-        "transaction_id": "TX_FLOW_" + Math.random().toString(36).substring(2, 9).toUpperCase(),
-        "node_ingress_proxy": "cloudflare_tunnel_ingress_vm",
-        "payload": {
-          "origin_client": clientName,
-          "ingress_email": clientEmail,
-          "payload_size_bytes": clientMessage.length
-        },
-        "dispatched_at": new Date().toISOString()
-      };
+      const contactSection = document.getElementById('contact');
+      const web3FormsKey = contactSection ? contactSection.getAttribute('data-web3forms-key') : '';
 
-      responseCode.textContent = JSON.stringify(mockJSON, null, 2);
-      responsePanel.classList.remove('hidden');
+      // Set button to loading state
+      const submitBtn = contactForm.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      let originalBtnHTML = '';
+      if (submitBtn) {
+        originalBtnHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> SENDING_PAYLOAD...`;
+      }
+      nameInput.disabled = true;
+      emailInput.disabled = true;
+      messageInput.disabled = true;
 
-      // Clear inputs cleanly
-      nameInput.value = '';
-      emailInput.value = '';
-      messageInput.value = '';
+      try {
+        if (web3FormsKey) {
+          // Real email integration mode via Web3Forms
+          const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              access_key: web3FormsKey,
+              name: clientName,
+              email: clientEmail,
+              message: clientMessage,
+              subject: `New Contact Message from ${clientName} (${clientEmail})`,
+              from_name: 'Portfolio Contact Agent'
+            })
+          });
 
-      if ((window as any).showToast) {
-        (window as any).showToast("POST_ACCEPTED", "Message successfully buffered in system memory.");
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            // Render successful API response payload
+            const resultJSON = {
+              "status": response.status,
+              "status_text": "OK",
+              "success": true,
+              "transaction_id": data.id || "TX_FLOW_" + Math.random().toString(36).substring(2, 9).toUpperCase(),
+              "provider": "Web3Forms API Ingress",
+              "payload": {
+                "origin_client": clientName,
+                "ingress_email": clientEmail,
+                "payload_size_bytes": clientMessage.length
+              },
+              "dispatched_at": new Date().toISOString()
+            };
+
+            responseCode.textContent = JSON.stringify(resultJSON, null, 2);
+            responsePanel.classList.remove('hidden');
+
+            // Clear inputs cleanly
+            nameInput.value = '';
+            emailInput.value = '';
+            messageInput.value = '';
+
+            if ((window as any).showToast) {
+              (window as any).showToast("POST_SUCCESS", "Message successfully delivered via Web3Forms.");
+            }
+          } else {
+            // Web3Forms API error response
+            const errJSON = {
+              "status": response.status,
+              "status_text": "Bad Request",
+              "success": false,
+              "error_message": data.message || "Failed to deliver payload.",
+              "dispatched_at": new Date().toISOString()
+            };
+            responseCode.textContent = JSON.stringify(errJSON, null, 2);
+            responsePanel.classList.remove('hidden');
+
+            if ((window as any).showToast) {
+              (window as any).showToast("POST_ERROR", data.message || "Delivery failure.", "warning");
+            }
+          }
+        } else {
+          // Simulation mode fallback
+          await new Promise(resolve => setTimeout(resolve, 800));
+
+          const mockJSON = {
+            "status": 202,
+            "status_text": "Accepted",
+            "simulation_mode": true,
+            "notice": "[SIMULATION_MODE] PUBLIC_WEB3FORMS_KEY environment variable is not configured. Logging payload locally.",
+            "transaction_id": "TX_FLOW_" + Math.random().toString(36).substring(2, 9).toUpperCase(),
+            "node_ingress_proxy": "cloudflare_tunnel_ingress_vm",
+            "payload": {
+              "origin_client": clientName,
+              "ingress_email": clientEmail,
+              "payload_size_bytes": clientMessage.length
+            },
+            "dispatched_at": new Date().toISOString()
+          };
+
+          responseCode.textContent = JSON.stringify(mockJSON, null, 2);
+          responsePanel.classList.remove('hidden');
+
+          // Clear inputs cleanly
+          nameInput.value = '';
+          emailInput.value = '';
+          messageInput.value = '';
+
+          if ((window as any).showToast) {
+            (window as any).showToast("POST_ACCEPTED", "Message successfully buffered in system memory.");
+          }
+        }
+      } catch (err: any) {
+        // Network or fetch failure
+        const failJSON = {
+          "status": 500,
+          "status_text": "Internal Server Error",
+          "success": false,
+          "exception": err.message || "Unknown transport exception",
+          "dispatched_at": new Date().toISOString()
+        };
+        responseCode.textContent = JSON.stringify(failJSON, null, 2);
+        responsePanel.classList.remove('hidden');
+
+        if ((window as any).showToast) {
+          (window as any).showToast("POST_FAILED", "Network connection or provider error.", "warning");
+        }
+      } finally {
+        // Re-enable form fields
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
+        }
+        nameInput.disabled = false;
+        emailInput.disabled = false;
+        messageInput.disabled = false;
       }
     });
   }
 
-  // Setup listener for page-load
+  // Support Astro view transitions
   document.addEventListener('astro:page-load', () => {
     initContactForm();
   });

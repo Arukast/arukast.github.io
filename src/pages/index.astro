@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Terminal from '../components/Terminal.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import ContactForm from '../components/ContactForm.astro';
 import Footer from '../components/Footer.astro';
 
 import { getCollection } from 'astro:content';
@@ -49,7 +48,7 @@ const featuredProjects = allProjects.filter(project =>
  
         <!-- CTA Action Buttons -->
         <div class="flex flex-wrap gap-5 pt-2">
-          <a href="#contact" class="inline-flex items-center justify-center font-sans text-xs font-bold tracking-widest uppercase bg-[var(--accent-primary)] hover:bg-emerald-400 text-black px-8 py-4 rounded-md transition duration-300 cursor-pointer shadow-lg shadow-emerald-500/10">
+          <a href={`mailto:${profile.socials.email}`} class="inline-flex items-center justify-center font-sans text-xs font-bold tracking-widest uppercase bg-[var(--accent-primary)] hover:bg-emerald-400 text-black px-8 py-4 rounded-md transition duration-300 cursor-pointer shadow-lg shadow-emerald-500/10">
             CONTACT ME
           </a>
           <a href={profile.cvUrl} download class="inline-flex items-center justify-center font-sans text-xs font-bold tracking-widest uppercase bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-[var(--border-color)] hover:border-zinc-700 px-8 py-4 rounded-md transition duration-300 cursor-pointer">
@@ -113,9 +112,6 @@ const featuredProjects = allProjects.filter(project =>
         <a href={profile.cvUrl} download title="Download Resume (PDF)" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
           <i class="fa-solid fa-file-pdf"></i>
         </a>
-        <a href="#contact" title="Contact API Direct" class="text-zinc-400 hover:text-[var(--accent-primary)] transition-all transform hover:scale-110 text-2xl">
-          <i class="fa-solid fa-envelope-open-text"></i>
-        </a>
       </div>
     </section>
 
@@ -159,8 +155,6 @@ const featuredProjects = allProjects.filter(project =>
       </div>
     </section>
 
-    <!-- Contact Box & Simulated POST Request CLI Console -->
-    <ContactForm />
   </main>
 
   <!-- Minimal System Footer -->

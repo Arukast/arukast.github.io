@@ -28,9 +28,6 @@ const isHome = pathname === '/' || pathname === '';
       <a href={isHome ? "#core-projects" : "/#core-projects"} class="nav-link text-zinc-400 py-1" data-nav="projects">
         ~#projects
       </a>
-      <a href={isHome ? "#contact" : "/#contact"} class="nav-link text-zinc-400 py-1" data-nav="contact">
-        ~#contact
-      </a>
     </nav>
   </div>
 </header>
@@ -142,8 +139,7 @@ const isHome = pathname === '/' || pathname === '';
         { id: 'home', nav: 'home' },
         { id: 'profile', nav: 'profile' },
         { id: 'terminal-root', nav: 'terminal' },
-        { id: 'core-projects', nav: 'projects' },
-        { id: 'contact', nav: 'contact' }
+        { id: 'core-projects', nav: 'projects' }
       ];
       
       const isCurrentHome = window.location.pathname === '/' || window.location.pathname === '';
@@ -163,11 +159,6 @@ const isHome = pathname === '/' || pathname === '';
           }
         });
 
-        // Force contact highlight if scrolled to the absolute bottom
-        const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
-        if (isAtBottom) {
-          activeNav = 'contact';
-        }
       }
       
       links.forEach(link => {
