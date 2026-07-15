@@ -13,7 +13,8 @@ liveUrl: ""
 
 # Ordering & Homepage Pinning (Optional)
 order:  # Integer: lower numbers are displayed first (e.g., 1 before 2)
-featured: false # Boolean: set to true to feature this project on the homepage
+featured:  # Boolean: set to true to feature this project on the homepage
+
 
 # Media Showcase, Recommended Limit between 6 to 12 images per project (Optional, omit if not applicable)
 image: ""
