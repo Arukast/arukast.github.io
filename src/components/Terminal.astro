@@ -3,20 +3,20 @@ import profile from '../data/profile.json';
 ---
 <section id="terminal-root" data-fs={JSON.stringify(profile.terminalFS)} data-stats={JSON.stringify(profile.terminalStats)} class="flex flex-col border border-[var(--border-color)] bg-zinc-950/80 rounded-2xl overflow-hidden shadow-xl min-h-[500px]">
   <!-- Terminal Header Bar -->
-  <div class="bg-zinc-900/40 border-b border-[var(--border-color)] px-4 py-3 flex justify-between items-center">
-    <div class="flex items-center gap-1.5">
+  <div class="bg-zinc-900/40 border-b border-[var(--border-color)] px-4 py-3 flex justify-between items-center gap-3">
+    <div class="flex items-center gap-1.5 shrink-0">
       <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
       <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
       <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
       <span class="font-mono text-sm font-bold uppercase tracking-wider text-zinc-300 ml-2">sys_diagnose.sh</span>
     </div>
-    <span class="font-mono text-xs bg-zinc-900/60 text-zinc-400 px-2.5 py-0.5 rounded border border-[var(--border-color)]">
+    <span class="font-mono text-[11px] sm:text-xs md:text-sm bg-zinc-900/60 text-zinc-400 px-2 sm:px-2.5 md:px-3 py-0.5 md:py-1 rounded border border-[var(--border-color)] whitespace-nowrap hidden min-[420px]:inline-block">
       interactive CLI
     </span>
   </div>
 
   <!-- Terminal History Content -->
-  <div id="terminal-history" class="p-6 font-mono text-[15px] text-zinc-400 space-y-4 flex-grow overflow-y-auto max-h-[450px]">
+  <div id="terminal-history" class="p-4 sm:p-6 font-mono text-[13px] sm:text-[15px] text-zinc-400 space-y-4 flex-grow overflow-y-auto max-h-[450px]">
     <div class="text-zinc-400 italic">
       Web-virtualized SSH tunnel active. Run "help" or click presets to inspect local registers.
     </div>
@@ -34,7 +34,7 @@ import profile from '../data/profile.json';
                          
         </pre>
       </div>
-      <div class="space-y-1 text-zinc-400 font-mono text-[15px]">
+      <div class="space-y-1 text-zinc-400 font-mono text-[13px] sm:text-[15px]">
         <p><strong class="text-zinc-200">OS:</strong> {profile.terminalStats.os}</p>
         <p><strong class="text-zinc-200">Shell:</strong> {profile.terminalStats.shell}</p>
         <p><strong class="text-zinc-200">Infrastructure:</strong> {profile.terminalStats.infrastructure}</p>
@@ -44,29 +44,29 @@ import profile from '../data/profile.json';
   </div>
 
   <!-- CLI Touch Presets -->
-  <div id="terminal-presets" class="px-5 py-2.5 border-t border-[var(--border-color)] bg-zinc-900/10 flex flex-wrap gap-2 items-center">
+  <div id="terminal-presets" class="px-4 py-2 sm:px-5 sm:py-2.5 border-t border-[var(--border-color)] bg-zinc-900/10 flex flex-wrap gap-2 items-center">
     <span class="text-xs text-zinc-400 uppercase font-mono tracking-wider">Directives:</span>
-    <button data-cmd="help" class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-sm border border-[var(--border-color)] transition cursor-pointer">
+    <button data-cmd="help" class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-xs sm:text-sm border border-[var(--border-color)] transition cursor-pointer">
       help
     </button>
-    <button data-cmd="ls" class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-sm border border-[var(--border-color)] transition cursor-pointer">
+    <button data-cmd="ls" class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-xs sm:text-sm border border-[var(--border-color)] transition cursor-pointer">
       ls
     </button>
-    <button data-cmd="cat about.md" class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-sm border border-[var(--border-color)] transition cursor-pointer">
+    <button data-cmd="cat about.md" class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-xs sm:text-sm border border-[var(--border-color)] transition cursor-pointer">
       about.md
     </button>
-    <button data-cmd="cat cv.txt" class="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-sm border border-[var(--border-color)] transition cursor-pointer">
+    <button data-cmd="cat cv.txt" class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 rounded-md font-mono text-xs sm:text-sm border border-[var(--border-color)] transition cursor-pointer">
       cv.txt
     </button>
-    <button data-cmd="clear" class="px-3 py-1.5 bg-rose-950/20 hover:bg-rose-900/20 text-rose-400/80 rounded-md font-mono text-sm border border-rose-900/30 transition cursor-pointer">
+    <button data-cmd="clear" class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-rose-950/20 hover:bg-rose-900/20 text-rose-400/80 rounded-md font-mono text-xs sm:text-sm border border-rose-900/30 transition cursor-pointer">
       clear
     </button>
   </div>
 
   <!-- Terminal Command Input Line -->
-  <form id="terminal-form" class="bg-zinc-950 px-5 py-3 border-t border-[var(--border-color)] flex items-center gap-2">
-    <span class="font-mono text-[15px] text-[var(--accent-primary)] font-bold">~$</span>
-    <input type="text" id="terminal-input" autocomplete="off" class="flex-grow bg-transparent text-zinc-100 font-mono text-[15px] outline-none border-none placeholder-zinc-700 caret-[var(--accent-primary)]" placeholder="Type core diagnostics commands..." />
+  <form id="terminal-form" class="bg-zinc-950 px-4 py-2.5 sm:px-5 sm:py-3 border-t border-[var(--border-color)] flex items-center gap-2">
+    <span class="font-mono text-[13px] sm:text-[15px] text-[var(--accent-primary)] font-bold">~$</span>
+    <input type="text" id="terminal-input" autocomplete="off" class="flex-grow bg-transparent text-zinc-100 font-mono text-[13px] sm:text-[15px] outline-none border-none placeholder-zinc-700 caret-[var(--accent-primary)]" placeholder="Type 'help' or commands..." />
   </form>
 </section>
 
@@ -114,13 +114,13 @@ import profile from '../data/profile.json';
       const arg = parts.slice(1).join(' ');
 
       const resultBlock = document.createElement('div');
-      resultBlock.className = 'text-zinc-300 text-[15px] pl-2 leading-relaxed font-mono';
+      resultBlock.className = 'text-zinc-300 text-[13px] sm:text-[15px] pl-2 leading-relaxed font-mono';
 
       switch (command) {
         case 'help':
           resultBlock.innerHTML = `
-            <p class="text-[var(--accent-primary)] font-bold mb-1 text-[15px]">Diagnostic Commands Available:</p>
-            <ul class="space-y-1 pl-2 text-zinc-400 font-mono text-[15px]">
+            <p class="text-[var(--accent-primary)] font-bold mb-1">Diagnostic Commands Available:</p>
+            <ul class="space-y-1 pl-2 text-zinc-400 font-mono">
               <li><span class="text-zinc-200 font-semibold">ls</span> - List configuration assets & virtual markdown records</li>
               <li><span class="text-zinc-200 font-semibold">cat &lt;file&gt;</span> - Print contents of selected registry file</li>
               <li><span class="text-zinc-200 font-semibold">neofetch</span> - Render underlying platform capabilities</li>
@@ -131,7 +131,7 @@ import profile from '../data/profile.json';
           break;
         case 'ls':
           const files = Object.keys(virtualFS)
-            .map(f => `<span class="text-[var(--accent-primary)] font-semibold hover:underline cursor-pointer" onclick="executeCommand('cat ${f}')"><i class="fa-regular fa-file-lines mr-1 text-[15px]"></i> ${f}</span>`)
+            .map(f => `<span class="text-[var(--accent-primary)] font-semibold hover:underline cursor-pointer" onclick="executeCommand('cat ${f}')"><i class="fa-regular fa-file-lines mr-1"></i> ${f}</span>`)
             .join(' &nbsp;&nbsp;&nbsp; ');
           resultBlock.innerHTML = `<div class="mt-1 flex flex-wrap gap-x-4 gap-y-1">${files}</div>`;
           break;
@@ -139,7 +139,7 @@ import profile from '../data/profile.json';
           if (!arg) {
             resultBlock.innerHTML = `<span class="text-rose-400">Error: Target file parameters omitted. (e.g. "cat about.md")</span>`;
           } else if (virtualFS[arg]) {
-            resultBlock.innerHTML = `<div class="bg-zinc-950 p-4 rounded-lg border border-[var(--border-color)] whitespace-pre-wrap text-[15px] leading-relaxed text-zinc-300 font-mono">${virtualFS[arg]}</div>`;
+            resultBlock.innerHTML = `<div class="bg-zinc-950 p-4 rounded-lg border border-[var(--border-color)] whitespace-pre-wrap text-[13px] sm:text-[15px] leading-relaxed text-zinc-300 font-mono">${virtualFS[arg]}</div>`;
           } else {
             resultBlock.innerHTML = `<span class="text-rose-400">Error: Target file parameter "/${arg}" not found in filesystem logs.</span>`;
           }
@@ -155,7 +155,7 @@ import profile from '../data/profile.json';
        |__/           
                 </pre>
               </div>
-              <div class="space-y-1 text-zinc-400 font-mono text-[15px]">
+              <div class="space-y-1 text-zinc-400 font-mono text-[13px] sm:text-[15px]">
                 <p><strong class="text-zinc-100">OS:</strong> ${stats.os}</p>
                 <p><strong class="text-zinc-100">Shell:</strong> ${stats.shell}</p>
                 <p><strong class="text-zinc-100">Infrastructure:</strong> ${stats.infrastructure}</p>
