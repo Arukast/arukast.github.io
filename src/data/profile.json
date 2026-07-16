@@ -2,6 +2,8 @@
   "name": "Tb. Alta Ulil Abshor (Alta)",
   "username": "arukast",
   "domain": "arukast.github.io",
+  "siteTitle": "Portfolio Alta",
+  "favicon": "/terminal.svg",
   "title": "Infrastructure & Back-End Enthusiast",
   "bio": "Information Systems student at Telkom University and Enterprise Infrastructure Management Lab Staff. Focused on self-hosted infrastructure, back-end development, and open-source tooling, backed by hands-on experience running a personal Proxmox homelab.",
   "avatarUrl": "/Foto_Tb. Alta Ulil Abshor.webp",

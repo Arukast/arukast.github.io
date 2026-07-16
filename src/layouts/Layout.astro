@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import profile from '../data/profile.json';
 
 interface Props {
   title?: string;
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const {
-  title = "sys_admin@portfolio:~# - Systems & Infrastructure Engineer",
+  title = profile.siteTitle,
   description = "Specializing in automating resilient backend architectures, infrastructure pipelines, and building low-latency microservices."
 } = Astro.props;
 ---
@@ -20,6 +21,9 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href={profile.favicon} />
+  <!-- You can also use png or ico formats, e.g.: -->
+  <!-- <link rel="icon" type="image/png" href={profile.favicon} /> -->
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
