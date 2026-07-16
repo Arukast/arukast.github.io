@@ -1,6 +1,17 @@
 @import "tailwindcss" source(none);
 @source "../**/*.{astro,html,js,jsx,md,mdx,ts,tsx}";
 
+/* Local Fonts & Icons */
+@import "@fontsource/inter/300.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/700.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 @theme {
   --font-sans: "Inter", sans-serif;
@@ -54,30 +65,5 @@
   --accent-glow: rgba(16, 185, 129, 0.05);
   --text-primary: #f4f4f5;
   --text-secondary: #a1a1aa;
-}
-
-/* Override Font Awesome @font-face rules to apply font-display: swap */
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Font Awesome 6 Brands';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2') format('woff2');
 }
 
