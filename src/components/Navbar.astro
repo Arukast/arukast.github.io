@@ -10,23 +10,23 @@ const isHome = pathname === '/' || pathname === '';
     <div class="flex items-center gap-2">
       <a href="/" class="font-mono text-[13px] sm:text-sm tracking-tight hover:opacity-80 flex items-center gap-1">
         <span class="text-[var(--accent-primary)]"><i class="fa-solid fa-terminal"></i></span>
-        <span class="font-bold">{profile.username}</span><span class="font-bold logo-domain">@{profile.domain}</span><span class="text-zinc-400 logo-text-desktop">:~#</span>
+        <span class="font-bold">{profile.username}</span><span class="font-bold logo-domain">@{profile.domain}</span><span class="text-zinc-400 logo-text-desktop hidden sm:inline-block">:~#</span>
       </a>
     </div>
 
     <!-- Navigation Tabs -->
-    <nav class="flex gap-3 sm:gap-5 text-[13px] sm:text-sm font-mono">
+    <nav class="flex gap-2 min-[380px]:gap-3 sm:gap-5 text-[11px] min-[380px]:text-[13px] sm:text-sm font-mono">
       <a href={isHome ? "#home" : "/"} class="nav-link text-zinc-400 py-1" data-nav="home">
-        /home
+        <span class="hidden sm:inline">/</span>home
       </a>
       <a href={isHome ? "#profile" : "/#profile"} class="nav-link text-zinc-400 py-1" data-nav="profile">
-        ~#profile
+        <span class="hidden sm:inline">~#</span>profile
       </a>
       <a href={isHome ? "#terminal-root" : "/#terminal-root"} class="nav-link text-zinc-400 py-1" data-nav="terminal">
-        ~#terminal
+        <span class="hidden sm:inline">~#</span>terminal
       </a>
       <a href={isHome ? "#core-projects" : "/#core-projects"} class="nav-link text-zinc-400 py-1" data-nav="projects">
-        ~#projects
+        <span class="hidden sm:inline">~#</span>projects
       </a>
     </nav>
   </div>
@@ -70,13 +70,19 @@ const isHome = pathname === '/' || pathname === '';
   }
 
   .logo-domain {
-    display: inline-block;
+    display: none;
     max-width: 150px;
     opacity: 1;
     overflow: hidden;
     white-space: nowrap;
     transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
     vertical-align: bottom;
+  }
+
+  @media (min-width: 640px) {
+    .logo-domain {
+      display: inline-block;
+    }
   }
 
   /* Collapse the domain name on scroll to keep the island compact and clean */
@@ -198,10 +204,17 @@ const isHome = pathname === '/' || pathname === '';
         if (el) observer?.observe(el);
       });
     } else {
-      // Clear active styling if not home
+      // Clear active styling if not home, except for projects subdirectory
+      const isProjectsPath = window.location.pathname.startsWith('/projects');
       links.forEach(link => {
-        link.classList.remove('active-glow');
-        link.classList.add('text-zinc-400');
+        const nav = link.getAttribute('data-nav');
+        if (isProjectsPath && nav === 'projects') {
+          link.classList.add('active-glow');
+          link.classList.remove('text-zinc-400');
+        } else {
+          link.classList.remove('active-glow');
+          link.classList.add('text-zinc-400');
+        }
       });
     }
 

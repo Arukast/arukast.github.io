@@ -24,8 +24,8 @@ import profile from '../data/profile.json';
       <span class="text-[var(--accent-primary)]">~$</span> neofetch
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
-      <div class="flex items-center justify-center py-2 md:py-0">
-        <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight text-left whitespace-pre">
+      <div class="flex items-center justify-center py-2 md:py-0 w-full overflow-hidden">
+        <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight text-left whitespace-pre text-[9px] min-[380px]:text-[10px] sm:text-xs overflow-x-auto w-full">
     ___    __  _________ 
    /   |  / / /_  __/   |
   / /| | / /   / / / /| |
@@ -147,8 +147,8 @@ import profile from '../data/profile.json';
         case 'neofetch':
           resultBlock.innerHTML = `
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-[var(--bg-secondary)]/30 p-4 rounded-xl border border-[var(--border-color)]">
-              <div class="flex items-center justify-center py-2 md:py-0">
-                <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight text-left whitespace-pre">
+              <div class="flex items-center justify-center py-2 md:py-0 w-full overflow-hidden">
+                <pre class="text-[var(--accent-primary)] font-bold font-mono leading-tight text-left whitespace-pre text-[10px] sm:text-xs overflow-x-auto w-full">
   __ _ _  _ ___ _ _ _ 
  / _\` | || (_ - <  _\` | 
  \\\\__,_|\\\\_, /__/_| |_| 

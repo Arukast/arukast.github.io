@@ -79,12 +79,12 @@ const statusColor = statusColorMap[status.toUpperCase()] || 'bg-zinc-900 text-zi
         )}
 
         <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
-          <div class="flex gap-2 text-xs font-mono text-zinc-400">
+          <div class="flex flex-wrap gap-x-2 gap-y-1.5 text-xs font-mono text-zinc-400">
             {tags.map(tag => (
               <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">{tag}</span>
             ))}
           </div>
-          <div class="flex items-center gap-4">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
             <a href={`/projects/${slug}`} class="text-sm font-mono text-zinc-400 hover:text-white hover:underline flex items-center gap-1">
               view_case_study <i class="fa-solid fa-file-lines text-xs"></i>
             </a>
