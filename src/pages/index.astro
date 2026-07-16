@@ -91,9 +91,11 @@ const featuredProjects = hasFeaturedField
       <div class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest mb-6 select-none">// DETAILED_PROFILE_MANIFEST</div>
 
       <!-- Avatar with pulse indicator -->
-      <div class="relative mb-6">
-        <img src={profile.avatarUrl} alt="Profile Avatar" onerror="this.src='https://placehold.co/150x150/111/fff?text=User'" class="w-56 h-56 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-2.5 bg-zinc-900" />
-        <div class="absolute -bottom-1 -right-1 w-9 h-9 bg-emerald-500 border-4 border-[var(--bg-primary)] rounded-full"></div>
+      <div class="relative mb-6 group">
+        <button id="avatar-trigger" class="relative block focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] rounded-2xl overflow-hidden cursor-zoom-in" aria-label="Zoom profile picture">
+          <img src={profile.avatarUrl} alt="Profile Avatar" onerror="this.src='https://placehold.co/150x150/111/fff?text=User'" class="w-56 h-56 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-2.5 bg-zinc-900 group-hover:scale-[1.03] transition-all duration-300" />
+        </button>
+        <div class="absolute -bottom-1 -right-1 w-9 h-9 bg-emerald-500 border-4 border-[var(--bg-primary)] rounded-full pointer-events-none"></div>
       </div>
 
       <!-- Bio Details -->
@@ -167,6 +169,52 @@ const featuredProjects = hasFeaturedField
     </section>
 
   </main>
+
+  <!-- Avatar Lightbox Modal -->
+  <div id="avatar-lightbox" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-sm">
+    <button id="avatar-lightbox-close" class="absolute top-6 right-6 text-zinc-400 hover:text-white text-3xl transition" aria-label="Close Lightbox">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-[85vw] max-h-[80vh] flex flex-col items-center">
+      <img id="avatar-lightbox-img" src={profile.avatarUrl} alt="Profile Avatar Large" class="max-w-full max-h-[85vh] rounded-2xl border border-zinc-800 object-contain shadow-2xl bg-zinc-900 p-2" />
+    </div>
+  </div>
+
+  <script>
+    function initAvatarLightbox() {
+      const trigger = document.getElementById('avatar-trigger');
+      const lightbox = document.getElementById('avatar-lightbox');
+      const closeBtn = document.getElementById('avatar-lightbox-close');
+
+      if (trigger && lightbox && closeBtn) {
+        const openLightbox = () => {
+          lightbox.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        const closeLightbox = () => {
+          lightbox.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        trigger.addEventListener('click', openLightbox);
+        closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox) {
+            closeLightbox();
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (lightbox.classList.contains('pointer-events-none')) return;
+          if (e.key === 'Escape') {
+            closeLightbox();
+          }
+        });
+      }
+    }
+
+    // Initialize on page load and astro page transitions
+    document.addEventListener('astro:page-load', initAvatarLightbox);
+  </script>
 
   <!-- Minimal System Footer -->
   <Footer />
