@@ -53,6 +53,15 @@ const featuredProjects = hasFeaturedField
           <a href={`mailto:${profile.socials.email}`} title="Email Developer Direct" class="flex items-center justify-center w-11 h-11 rounded-full bg-[#ea4335] text-white hover:brightness-110 hover:scale-110 transition duration-300 text-xl shadow-md">
             <i class="fa-solid fa-envelope"></i>
           </a>
+
+          <!-- Copy Email Badge -->
+          <div class="flex items-center gap-2 bg-zinc-900/60 border border-[var(--border-color)] rounded-full py-2 px-4.5 text-[13px] sm:text-sm text-zinc-400 font-mono transition duration-300 hover:border-zinc-700 hover:text-zinc-300 select-none shadow-md h-11">
+            <span class="text-zinc-500 font-bold">&gt;</span>
+            <span id="email-address-text" class="text-zinc-300 select-text">{profile.socials.email}</span>
+            <button id="copy-email-badge" data-email={profile.socials.email} class="ml-1 p-1 hover:text-[var(--accent-primary)] cursor-pointer transition-colors" title="Copy email address">
+              <i id="copy-email-icon" class="fa-regular fa-copy"></i>
+            </button>
+          </div>
         </div>
  
         <!-- CTA Action Buttons -->
@@ -212,8 +221,44 @@ const featuredProjects = hasFeaturedField
       }
     }
 
+    function initCopyEmail() {
+      const copyBtn = document.getElementById('copy-email-badge');
+      const copyIcon = document.getElementById('copy-email-icon');
+      if (!copyBtn || !copyIcon) return;
+
+      copyBtn.addEventListener('click', async () => {
+        const email = copyBtn.getAttribute('data-email');
+        if (!email) return;
+
+        try {
+          await navigator.clipboard.writeText(email);
+          
+          // Feedback micro-animation
+          copyIcon.className = 'fa-solid fa-check text-emerald-400';
+          copyBtn.title = 'Email copied!';
+          
+          if ((window as any).showToast) {
+            (window as any).showToast("SYSTEM", "Email address copied to clipboard.");
+          }
+
+          setTimeout(() => {
+            copyIcon.className = 'fa-regular fa-copy';
+            copyBtn.title = 'Copy email address';
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy email: ', err);
+          if ((window as any).showToast) {
+            (window as any).showToast("ERROR", "Failed to copy email to clipboard.", "warning");
+          }
+        }
+      });
+    }
+
     // Initialize on page load and astro page transitions
-    document.addEventListener('astro:page-load', initAvatarLightbox);
+    document.addEventListener('astro:page-load', () => {
+      initAvatarLightbox();
+      initCopyEmail();
+    });
   </script>
 
   <!-- Minimal System Footer -->
