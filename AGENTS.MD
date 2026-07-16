@@ -49,24 +49,24 @@ Before ending a session, the agent must perform these tasks:
 
 ### 2.2 Directory Layout & Component Roles
 - `src/layouts/`
-  - [Layout.astro](file:///home/arukast/Projects/portfolioWebAlta/src/layouts/Layout.astro): Main scaffolding layout providing page structure, global metadata, font imports (JetBrains Mono, Inter), FontAwesome assets, and Astro client transitions `<ClientRouter />`.
+  - [Layout.astro](./src/layouts/Layout.astro): Main scaffolding layout providing page structure, global metadata, font imports (JetBrains Mono, Inter), FontAwesome assets, and Astro client transitions `<ClientRouter />`.
 - `src/components/`
-  - [Terminal.astro](file:///home/arukast/Projects/portfolioWebAlta/src/components/Terminal.astro): Client-side interactive terminal emulator running the `sys_diagnose.sh` interface. Parses commands: `help`, `ls`, `cat`, `neofetch`, `uptime`, `clear`, `sudo`.
-  - [ContactForm.astro](file:///home/arukast/Projects/portfolioWebAlta/src/components/ContactForm.astro): Interactive message dispatcher form simulated as a `POST /api/v1/contact` client. Submits live to Web3Forms API when `PUBLIC_WEB3FORMS_KEY` is present; falls back to simulated memory log output with styled JSON responses when absent.
-  - [Navbar.astro](file:///home/arukast/Projects/portfolioWebAlta/src/components/Navbar.astro): Responsive console-themed header menu handling site view routes (/home and /projects).
-  - [ProjectCard.astro](file:///home/arukast/Projects/portfolioWebAlta/src/components/ProjectCard.astro): Renders project cases, displaying status badges, tags, description, external links, and architecture stacks.
-  - [Footer.astro](file:///home/arukast/Projects/portfolioWebAlta/src/components/Footer.astro): Custom footer containing an active clock loop simulating node uptime daemon processes.
+  - [Terminal.astro](./src/components/Terminal.astro): Client-side interactive terminal emulator running the `sys_diagnose.sh` interface. Parses commands: `help`, `ls`, `cat`, `neofetch`, `uptime`, `clear`, `sudo`.
+  - [ContactForm.astro](./src/components/ContactForm.astro): Interactive message dispatcher form simulated as a `POST /api/v1/contact` client. Submits live to Web3Forms API when `PUBLIC_WEB3FORMS_KEY` is present; falls back to simulated memory log output with styled JSON responses when absent.
+  - [Navbar.astro](./src/components/Navbar.astro): Responsive console-themed header menu handling site view routes (/home and /projects).
+  - [ProjectCard.astro](./src/components/ProjectCard.astro): Renders project cases, displaying status badges, tags, description, external links, and architecture stacks.
+  - [Footer.astro](./src/components/Footer.astro): Custom footer containing an active clock loop simulating node uptime daemon processes.
 - `src/pages/`
-  - [index.astro](file:///home/arukast/Projects/portfolioWebAlta/src/pages/index.astro): Core landing page. Integrates profile details, interactive terminal, featured projects, and contact form.
+  - [index.astro](./src/pages/index.astro): Core landing page. Integrates profile details, interactive terminal, featured projects, and contact form.
   - `projects/index.astro`: Grid registry of all collection projects sorted by order flag.
   - `projects/[...slug].astro`: Dynamic case study layout rendering complete project Markdown files.
 - `src/data/`
-  - [profile.json](file:///home/arukast/Projects/portfolioWebAlta/src/data/profile.json): Decoupled JSON data store containing profile text, interactive terminal files, and system statistics.
+  - [profile.json](./src/data/profile.json): Decoupled JSON data store containing profile text, interactive terminal files, and system statistics.
 - `src/content/`
   - `projects/`: Collection directory holding individual project Markdown files (`dotfiles.md`, `homelab-infrastructure.md`, etc.).
-  - [content.config.ts](file:///home/arukast/Projects/portfolioWebAlta/src/content.config.ts): Definition of the `projects` content collection schema using Zod.
+  - [content.config.ts](./src/content.config.ts): Definition of the `projects` content collection schema using Zod.
 - `src/styles/`
-  - [global.css](file:///home/arukast/Projects/portfolioWebAlta/src/styles/global.css): Core design tokens (zinc-950, emerald-500, custom variables), custom scrollbars, animations, and Tailwind v4 imports.
+  - [global.css](./src/styles/global.css): Core design tokens (zinc-950, emerald-500, custom variables), custom scrollbars, animations, and Tailwind v4 imports.
 - `ansible/`: Container deployment scripts.
   - `inventory.ini.example`: Target VPS configuration variables and directory overrides.
   - `playbooks/harden.yml`: Hardens remote nodes (UFW, Fail2Ban, unattended upgrades, disables password authentication).
