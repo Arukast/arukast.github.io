@@ -124,8 +124,8 @@ const isHome = pathname === '/' || pathname === '';
     const container = document.getElementById('navbar-container');
     const links = document.querySelectorAll('.nav-link');
     
+    // Toggle header style on scroll
     function onScroll() {
-      // Toggle scrolled container state
       if (window.scrollY > 20) {
         header?.classList.add('is-scrolled');
         container?.classList.add('is-scrolled');
@@ -133,43 +133,75 @@ const isHome = pathname === '/' || pathname === '';
         header?.classList.remove('is-scrolled');
         container?.classList.remove('is-scrolled');
       }
-      
-      // Scroll Spy Logic
-      const sections = [
-        { id: 'home', nav: 'home' },
-        { id: 'profile', nav: 'profile' },
-        { id: 'terminal-root', nav: 'terminal' },
-        { id: 'core-projects', nav: 'projects' }
-      ];
-      
-      const isCurrentHome = window.location.pathname === '/' || window.location.pathname === '';
-      let activeNav = isCurrentHome ? 'home' : '';
-      
-      if (isCurrentHome) {
-        const viewportCenter = window.innerHeight / 2;
-        
-        sections.forEach(section => {
-          const el = document.getElementById(section.id);
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            // Highlight section if viewport center is inside its boundary
-            if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
-              activeNav = section.nav;
-            }
-          }
+    }
+
+    // Add scroll event listener with passive: true for performance
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // IntersectionObserver for Scroll Spy - completely avoids forced reflow / layout thrashing
+    const sections = [
+      { id: 'home', nav: 'home' },
+      { id: 'profile', nav: 'profile' },
+      { id: 'terminal-root', nav: 'terminal' },
+      { id: 'core-projects', nav: 'projects' }
+    ];
+    
+    const isCurrentHome = window.location.pathname === '/' || window.location.pathname === '';
+    let observer: IntersectionObserver | null = null;
+
+    if (isCurrentHome) {
+      const activeSections = new Map<string, boolean>();
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-30% 0px -40% 0px', // focused viewport center band
+        threshold: 0
+      };
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          activeSections.set(entry.target.id, entry.isIntersecting);
         });
 
-      }
-      
-      links.forEach(link => {
-        const nav = link.getAttribute('data-nav');
-        if (nav === activeNav) {
-          link.classList.add('active-glow');
-          link.classList.remove('text-zinc-400');
-        } else {
-          link.classList.remove('active-glow');
-          link.classList.add('text-zinc-400');
+        // Determine active navigation item based on intersection
+        let activeNav = 'home';
+        if (activeSections.get('core-projects')) {
+          activeNav = 'projects';
+        } else if (activeSections.get('terminal-root')) {
+          activeNav = 'terminal';
+        } else if (activeSections.get('profile')) {
+          activeNav = 'profile';
+        } else if (activeSections.get('home')) {
+          activeNav = 'home';
         }
+
+        // Fallback for very top of the page
+        if (window.scrollY < 50) {
+          activeNav = 'home';
+        }
+
+        links.forEach(link => {
+          const nav = link.getAttribute('data-nav');
+          if (nav === activeNav) {
+            link.classList.add('active-glow');
+            link.classList.remove('text-zinc-400');
+          } else {
+            link.classList.remove('active-glow');
+            link.classList.add('text-zinc-400');
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => {
+        const el = document.getElementById(section.id);
+        if (el) observer?.observe(el);
+      });
+    } else {
+      // Clear active styling if not home
+      links.forEach(link => {
+        link.classList.remove('active-glow');
+        link.classList.add('text-zinc-400');
       });
     }
 
@@ -196,9 +228,13 @@ const isHome = pathname === '/' || pathname === '';
       });
     });
 
-    window.addEventListener('scroll', onScroll);
-    // Initial call to set active states
-    onScroll();
+    // Cleanup listeners and observer on before-swap to prevent memory leaks / duplicates
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('scroll', onScroll);
+      if (observer) {
+        observer.disconnect();
+      }
+    }, { once: true });
   }
 
   // Handle Astro page transition load
