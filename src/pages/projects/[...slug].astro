@@ -79,7 +79,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     <!-- Project Architecture flow diagram if available -->
     {entry.data.architecture && entry.data.architecture.length > 0 && (
       <section class="bg-zinc-950 p-5 rounded-xl border border-[var(--border-color)] font-mono text-[11px] text-zinc-400 space-y-3">
-        <p class="text-zinc-500">// Infrastructure Path Flow</p>
+        <p class="text-zinc-400">// Infrastructure Path Flow</p>
         <div class="flex flex-wrap items-center gap-y-3 gap-x-2.5 text-xs">
           {entry.data.architecture.map((node, index) => (
             <>
@@ -166,7 +166,7 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
 
     <div class="max-w-[85vw] max-h-[80vh] flex flex-col items-center gap-3">
       <img id="lightbox-img" src="" alt="Lightbox image" class="max-w-full max-h-[80vh] rounded-lg border border-zinc-800 object-contain shadow-2xl" />
-      <span id="lightbox-counter" class="text-xs font-mono text-zinc-500"></span>
+      <span id="lightbox-counter" class="text-xs font-mono text-zinc-400"></span>
     </div>
 
     <!-- Next button -->

@@ -64,11 +64,11 @@ const statusColor = statusColorMap[status.toUpperCase()] || 'bg-zinc-900 text-zi
 
         {architecture && architecture.length > 0 && (
           <div class="bg-zinc-950 p-4 rounded-xl border border-[var(--border-color)] font-mono text-xs text-zinc-400 space-y-2">
-            <p class="text-zinc-500">// System Architecture</p>
+            <p class="text-zinc-400">// System Architecture</p>
             <div class="flex flex-wrap items-center gap-2 text-sm">
               {architecture.map((node, index) => (
                 <>
-                  {index > 0 && <span class="text-zinc-600">→</span>}
+                  {index > 0 && <span class="text-zinc-400">→</span>}
                   <span class={`bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded text-zinc-300 ${index === 1 ? 'font-semibold text-[var(--accent-primary)]' : ''}`}>
                     {node}
                   </span>
@@ -79,7 +79,7 @@ const statusColor = statusColorMap[status.toUpperCase()] || 'bg-zinc-900 text-zi
         )}
 
         <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
-          <div class="flex gap-2 text-xs font-mono text-zinc-500">
+          <div class="flex gap-2 text-xs font-mono text-zinc-400">
             {tags.map(tag => (
               <span class="bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">{tag}</span>
             ))}

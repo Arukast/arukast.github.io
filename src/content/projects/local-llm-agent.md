@@ -3,7 +3,7 @@ title: "Local LLM Inference & Agent Orchestration Stack"
 description: "A hybrid self-hosted AI orchestration stack that separates management planes from GPU-accelerated execution environments. Features dynamic VRAM model swapping, intelligent LiteLLM API routing with cloud fallbacks, and a custom Node.js MCP server providing private, web-grounded RAG."
 status: "BLUEPRINT" # Options: PRODUCTION, ONLINE, BLUEPRINT, STABLE
 category: "AI Infrastructure & Agentic Systems" # e.g., "Docker Routing", "Go Router & Queue", "Web Application"
-tags: ["Proxmox VE", "LiteLLM", "llama.cpp", "Redis", "Node.js", "SearXNG", "Open WebUI", "AMD RX 580"]
+tags: ["Proxmox VE", "LiteLLM", "llama.cpp", "Redis", "Node.js", "SearXNG", "Open WebUI"]
 icon: "fa-brain" # FontAwesome icon name (e.g., fa-cube, fa-server, fa-globe, fa-shield-halved)
 architecture: ["Open WebUI & Telegram Ingress", "LiteLLM Routing Gateway", "llama-swap VRAM Orchestrator", "GPU-Passthrough VM (Local Inference)"] # Optional: flows for the system path schematic
 
