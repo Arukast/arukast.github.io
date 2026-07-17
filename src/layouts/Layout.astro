@@ -9,9 +9,13 @@ interface Props {
 }
 
 const {
-  title = profile.siteTitle,
+  title,
   description = "Specializing in automating resilient backend architectures, infrastructure pipelines, and building low-latency microservices."
 } = Astro.props;
+
+const displayTitle = title && title !== profile.siteTitle
+  ? `${title} | ${profile.siteTitle}`
+  : profile.siteTitle;
 ---
 
 <!DOCTYPE html>
@@ -19,7 +23,7 @@ const {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
+  <title>{displayTitle}</title>
   <meta name="description" content={description} />
   <link rel="icon" type="image/svg+xml" href={profile.favicon} />
   <!-- You can also use png or ico formats, e.g.: -->
