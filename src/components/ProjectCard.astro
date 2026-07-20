@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
   slug: string;
   title: string;
@@ -11,7 +14,7 @@ interface Props {
   architecture?: string[];
   expanded?: boolean;
   icon?: string;
-  image?: string;
+  image?: ImageMetadata | string;
 }
 
 const {
@@ -105,11 +108,20 @@ const statusColor = statusColorMap[status.toUpperCase()] || 'bg-zinc-900 text-zi
       {image && (
         <div class="md:col-span-4 w-full h-full flex items-center">
           <a href={`/projects/${slug}`} class="block w-full overflow-hidden rounded-xl border border-[var(--border-color)] hover:border-zinc-700/80 transition duration-300 group/img bg-zinc-950">
-            <img 
-              src={image} 
-              alt={title} 
-              class="w-full aspect-[16/10] object-cover opacity-85 group-hover/img:opacity-100 group-hover/img:scale-102 transition-all duration-500" 
-            />
+            {typeof image === 'string' ? (
+              <img 
+                src={image} 
+                alt={title} 
+                class="w-full aspect-[16/10] object-cover opacity-85 group-hover/img:opacity-100 group-hover/img:scale-102 transition-all duration-500" 
+              />
+            ) : (
+              <Image 
+                src={image} 
+                alt={title} 
+                width={400}
+                class="w-full aspect-[16/10] object-cover opacity-85 group-hover/img:opacity-100 group-hover/img:scale-102 transition-all duration-500" 
+              />
+            )}
           </a>
         </div>
       )}

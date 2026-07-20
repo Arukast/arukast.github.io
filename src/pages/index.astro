@@ -6,6 +6,8 @@ import ProjectCard from '../components/ProjectCard.astro';
 import Footer from '../components/Footer.astro';
 
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import avatarImage from '../assets/avatar.avif';
 import profile from '../data/profile.json';
 
 const allProjects = await getCollection('projects');
@@ -102,7 +104,7 @@ const featuredProjects = hasFeaturedField
       <!-- Avatar with pulse indicator -->
       <div class="relative mb-6 group">
         <button id="avatar-trigger" class="relative block focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] rounded-2xl overflow-hidden cursor-zoom-in" aria-label="Zoom profile picture">
-          <img src={profile.avatarUrl} alt="Profile Avatar" onerror="this.src='https://placehold.co/150x150/111/fff?text=User'" class="w-56 h-56 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-2.5 bg-zinc-900 group-hover:scale-[1.03] transition-all duration-300" />
+          <Image src={avatarImage} alt="Profile Avatar" width={448} height={448} class="w-56 h-56 rounded-2xl border border-[var(--border-color)] object-cover shadow-lg p-2.5 bg-zinc-900 group-hover:scale-[1.03] transition-all duration-300" />
         </button>
         <div class="absolute -bottom-1 -right-1 w-9 h-9 bg-emerald-500 border-4 border-[var(--bg-primary)] rounded-full pointer-events-none"></div>
       </div>
@@ -185,7 +187,7 @@ const featuredProjects = hasFeaturedField
       <i class="fa-solid fa-xmark"></i>
     </button>
     <div class="max-w-[85vw] max-h-[80vh] flex flex-col items-center">
-      <img id="avatar-lightbox-img" src={profile.avatarUrl} alt="Profile Avatar Large" class="max-w-full max-h-[85vh] rounded-2xl border border-zinc-800 object-contain shadow-2xl bg-zinc-900 p-2" />
+      <Image id="avatar-lightbox-img" src={avatarImage} alt="Profile Avatar Large" width={1000} class="max-w-full max-h-[85vh] rounded-2xl border border-zinc-800 object-contain shadow-2xl bg-zinc-900 p-2" />
     </div>
   </div>
 

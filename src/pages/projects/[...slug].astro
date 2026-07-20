@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -68,11 +69,20 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
     <!-- Project Hero Image Banner if available -->
     {entry.data.image && (
       <section class="w-full overflow-hidden rounded-2xl border border-[var(--border-color)] bg-zinc-950/40">
-        <img 
-          src={entry.data.image} 
-          alt={`${entry.data.title} - Showcase`} 
-          class="w-full h-64 md:h-[400px] object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
-        />
+        {typeof entry.data.image === 'string' ? (
+          <img 
+            src={entry.data.image} 
+            alt={`${entry.data.title} - Showcase`} 
+            class="w-full h-64 md:h-[400px] object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+          />
+        ) : (
+          <Image 
+            src={entry.data.image} 
+            alt={`${entry.data.title} - Showcase`} 
+            width={1200}
+            class="w-full h-64 md:h-[400px] object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+          />
+        )}
       </section>
     )}
 
@@ -110,12 +120,22 @@ const statusColor = statusColorMap[entry.data.status.toUpperCase()] || 'bg-zinc-
             const isLastVisible = idx === 5 && entry.data.gallery!.length > 6;
             return (
               <div class={`group relative overflow-hidden rounded-xl border border-[var(--border-color)] bg-zinc-950/40 cursor-zoom-in aspect-video ${isHidden ? 'hidden' : ''}`}>
-                <img 
-                  src={img} 
-                  alt={`${entry.data.title} screenshot ${idx + 1}`} 
-                  class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-102 transition-all duration-300 gallery-image"
-                  data-src={img}
-                />
+                {typeof img === 'string' ? (
+                  <img 
+                    src={img} 
+                    alt={`${entry.data.title} screenshot ${idx + 1}`} 
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-102 transition-all duration-300 gallery-image"
+                    data-src={img}
+                  />
+                ) : (
+                  <Image 
+                    src={img} 
+                    alt={`${entry.data.title} screenshot ${idx + 1}`} 
+                    width={800}
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-102 transition-all duration-300 gallery-image"
+                    data-src={img.src}
+                  />
+                )}
                 {isLastVisible && (
                   <div class="absolute inset-0 bg-black/75 flex flex-col items-center justify-center pointer-events-none transition-colors group-hover:bg-black/60">
                     <span class="text-white font-mono text-2xl font-bold">

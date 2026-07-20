@@ -16,10 +16,11 @@ order: 1 # Integer: lower numbers are displayed first (e.g., 1 before 2)
 featured: true # Boolean: set to true to feature this project on the homepage
 
 # Media Showcase, Recommended Limit between 6 to 12 images per project (Optional, omit if not applicable)
-image: "/images/projects/your_main_hero_thumbnail.png"
+# Note: Put your images in "src/assets/projects/" and reference them using relative paths so Astro can optimize them
+image: "../../assets/projects/your_main_hero_thumbnail.png"
 gallery:
-  - "/images/projects/screenshot_1.png"
-  - "/images/projects/screenshot_2.png"
+  - "../../assets/projects/screenshot_1.png"
+  - "../../assets/projects/screenshot_2.png"
 ---
 
 ### Project Overview
